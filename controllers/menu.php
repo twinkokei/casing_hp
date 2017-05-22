@@ -4,15 +4,15 @@ include '../lib/function.php';
 include '../models/menu_model.php';
 $page = null;
 $page = (isset($_GET['page'])) ? $_GET['page'] : "list";
-$title = ucfirst("menu");
+$title = ucfirst("Item");
 
-$_SESSION['menu_active'] = 1;
+$_SESSION['item_active'] = 1;
 
 switch ($page) {
 	case 'list':
 		get_header($title);
 
-		$query = select();
+		$query = select_config('items', '');
 		$add_button = "menu.php?page=form";
 
 		include '../views/menu/list.php';
@@ -23,68 +23,28 @@ switch ($page) {
 		get_header();
 
 		$close_button = "menu.php?page=list";
-		$query_menu_kategori = select_menu_kategori();
-		$query_menu_type = select_menu_type();
-		$query_partner = select_partner();
-
 		$id = (isset($_GET['id'])) ? $_GET['id'] : null;
-
-		$add_button_item = "menu.php?page=form_item&menu_id=$id";
-
 		if($id){
-
-			$row = read_id($id);
-			$query_recipe = select_recipe($id);
-			$action = "menu.php?page=edit&id=$id";
+			$where = "WHERE item_id = '$id'";
+			$row = select_object_config('items', $where);
+			// $query_recipe = select_recipe($id);
+			$action = "menu?page=edit&id=$id";
 		} else{
 
 			//inisialisasi
 			$row = new stdClass();
 
-			$row->menu_name = false;
-			$row->menu_kategori=false;
-			$row->menu_type_id = false;
-			$row->menu_original_price = false;
-			$row->menu_margin_price = false;
-			$row->menu_price = false;
-			$row->menu_img = false;
-			$row->partner_id = false;
-			$row->out_time = false;
-			$action = "menu.php?page=save";
+			$row->item_name = false;
+			$row->item_kategori=false;
+			$row->item_type_id = false;
+			$row->item_original_price = false;
+			$row->item_margin_price = false;
+			$row->item_price = false;
+			$row->item_img = false;
+			$action = "menu?page=save";
 		}
 
 		include '../views/menu/form.php';
-		get_footer();
-	break;
-
-	case 'form_item':
-		get_header();
-
-		$menu_id = (isset($_GET['menu_id'])) ? $_GET['menu_id'] : null;
-
-		$close_button = "menu.php?page=form&id=$menu_id";
-
-		$query_item = select_item();
-
-		$id = (isset($_GET['id'])) ? $_GET['id'] : null;
-
-		if($id){
-
-			$row = read_item_id($id);
-			$query_recipe = select_recipe($id);
-			$action = "menu.php?page=edit_item&id=$id&menu_id=$menu_id";
-		} else{
-
-			//inisialisasi
-			$row = new stdClass();
-
-			$row->item_id = false;
-			$row->item_qty = false;
-
-			$action = "menu.php?page=save_item&menu_id=$menu_id";
-		}
-
-		include '../views/menu/form_item.php';
 		get_footer();
 	break;
 
@@ -92,21 +52,21 @@ switch ($page) {
 
 		extract($_POST);
 		$i_name = get_isset($i_name);
-		$i_menu_kategori = get_isset($i_menu_kategori);
-		$i_menu_type_id = get_isset($i_menu_type_id);
+		$i_item_kategori = get_isset($i_item_kategori);
+		$i_item_type_id = get_isset($i_item_type_id);
 		$i_original_price = get_isset($i_original_price);
 		$i_margin_price = get_isset($i_margin_price);
 		$i_price = get_isset($i_price);
 		$i_partner_id = get_isset($i_partner_id);
 		$i_out_time = get_isset($i_out_time);
 		$i_dapur_id = get_isset($i_dapur_id);
-		$path = "../img/menu/";
+		$path = "../img/item/";
 		$i_img_tmp = $_FILES['i_img']['tmp_name'];
 		$i_img = ($_FILES['i_img']['name']) ? time()."_".$_FILES['i_img']['name'] : "";
 
 			$data = "'',
-					'$i_menu_kategori',
-					'$i_menu_type_id',
+					'$i_item_kategori',
+					'$i_item_type_id',
 					'$i_name',
 					'$i_original_price',
 					'$i_margin_price',
@@ -117,11 +77,11 @@ switch ($page) {
 					'$i_dapur_id'
 					''
 			";
-				$create=mysql_query("insert into menus values(".$data.")");
+				$create=mysql_query("insert into items values(".$data.")");
 				if($i_img){
 				move_uploaded_file($i_img_tmp, $path.$i_img);
 			}
-			header("Location: menu.php?page=list&did=1");
+			header("Location: menu?page=list&did=1");
 				var_dump($data);
 
 
@@ -131,13 +91,13 @@ switch ($page) {
 
 		extract($_POST);
 
-		$menu_id = (isset($_GET['menu_id'])) ? $_GET['menu_id'] : null;
+		$item_id = (isset($_GET['item_id'])) ? $_GET['item_id'] : null;
 
 		$i_item_id = get_isset($i_item_id);
 		$i_item_qty = get_isset($i_item_qty);
 
 			$data = "'',
-					'$menu_id',
+					'$item_id',
 					'$i_item_id',
 					'$i_item_qty'
 			";
@@ -147,7 +107,7 @@ switch ($page) {
 			create_item($data);
 
 
-			header("Location: menu.php?page=form&id=$menu_id");
+			header("Location: menu?page=form&id=$item_id");
 
 
 	break;
@@ -158,15 +118,15 @@ switch ($page) {
 
 		$id = get_isset($_GET['id']);
 		$i_name = get_isset($i_name);
-		$i_menu_kategori = get_isset($i_menu_kategori);
-		$i_menu_type_id = get_isset($i_menu_type_id);
+		$i_item_kategori = get_isset($i_item_kategori);
+		$i_item_type_id = get_isset($i_item_type_id);
 		$i_original_price = get_isset($i_original_price);
 		$i_margin_price = get_isset($i_margin_price);
 		$i_price = get_isset($i_price);
 		$i_partner_id = get_isset($i_partner_id);
 		$i_out_time = get_isset($i_out_time);
 
-		$path = "../img/menu/";
+		$path = "../img/item/";
 		$i_img_tmp = $_FILES['i_img']['tmp_name'];
 		$i_img = ($_FILES['i_img']['name']) ? time()."_".$_FILES['i_img']['name'] : "";
 
@@ -181,12 +141,12 @@ switch ($page) {
 						}
 					}
 
-					$data = " menu_name = '$i_name',
-							menu_type_id = '$i_menu_type_id',
-							menu_original_price = '$i_original_price',
-							menu_margin_price = '$i_margin_price',
-							menu_price = '$i_price',
-							menu_img = '$i_img',
+					$data = " item_name = '$i_name',
+							item_type_id = '$i_item_type_id',
+							item_original_price = '$i_original_price',
+							item_margin_price = '$i_margin_price',
+							item_price = '$i_price',
+							item_img = '$i_img',
 							partner_id = '$i_partner_id',
 							out_time = '$i_out_time'
 
@@ -195,53 +155,42 @@ switch ($page) {
 			}
 
 			}else{
-				$data = " menu_name = '$i_name',
-							menu_type_id = '$i_menu_type_id',
-							menu_original_price = '$i_original_price',
-							menu_margin_price = '$i_margin_price',
-							menu_price = '$i_price',
+				$data = " item_name = '$i_name',
+							item_type_id = '$i_item_type_id',
+							item_original_price = '$i_original_price',
+							item_margin_price = '$i_margin_price',
+							item_price = '$i_price',
 							partner_id = '$i_partner_id',
 							out_time = '$i_out_time'
 					";
 			}
-
-
 			update($data, $id);
 
-			header('Location: menu.php?page=list&did=2');
-
-
-
+			header('Location: menu?page=list&did=2');
 	break;
 
 	case 'edit_item':
-
 		extract($_POST);
-
 		$id = get_isset($_GET['id']);
-		$menu_id = get_isset($_GET['menu_id']);
+		$item_id = get_isset($_GET['item_id']);
 		$i_item_id = get_isset($i_item_id);
 		$i_item_qty = get_isset($i_item_qty);
 
 
-				$data = " item_id = '$i_item_id',
-							item_qty = '$i_item_qty'
-					";
+			$data = " item_id = '$i_item_id',
+								item_qty = '$i_item_qty'";
 
+		$where = "item_id = '$i_item_id'";
+		update_config2('items', $data, $where);
 
-			update_item($data, $id);
-
-			header("Location: menu.php?page=form&id=$menu_id");
-
-
-
+		header("Location: menu?page=form&id=$item_id");
 	break;
 
 	case 'delete':
 
 		$id = get_isset($_GET['id']);
 
-		$path = "../img/menu/";
+		$path = "../img/item/";
 		$get_img_old = get_img_old($id);
 					if($get_img_old){
 						if(file_exists($path.$get_img_old)){
@@ -250,33 +199,32 @@ switch ($page) {
 					}
 		delete($id);
 
-		header('Location: menu.php?page=list&did=3');
+		header('Location: menu?page=list&did=3');
 
 	break;
 
 	case 'delete_item':
 
 		$id = get_isset($_GET['id']);
-		$menu_id = get_isset($_GET['menu_id']);
-
-		delete_item($id);
-
-		header("Location: menu.php?page=form&id=$menu_id");
+		$item_id = get_isset($_GET['item_id']);
+		$where = "item_id = '$item_id'";
+		delete_config('items', $where);
+		header("Location: menu?page=form&id=$item_id");
 
 	break;
 
-	case 'menu_type';
+	case 'item_type';
 
 		$id = $_POST['x'];
-		$query = mysql_query("select * from menu_types where id_kategori_utama = ".$id);
-		while($menu_types = mysql_fetch_array($query)){
-			$menu['data'][] = array(
-				'menu_type_id' => $menu_types['menu_type_id'],
-				'menu_type_name' => $menu_types['menu_type_name']
+		$query = mysql_query("select * from item_types where id_kategori_utama = ".$id);
+		while($item_types = mysql_fetch_array($query)){
+			$item['data'][] = array(
+				'item_type_id' => $item_types['item_type_id'],
+				'item_type_name' => $item_types['item_type_name']
 			);
 		};
-		$menu['status'] = '200';
-		echo json_encode($menu);
+		$item['status'] = '200';
+		echo json_encode($item);
 		break;
 
 }

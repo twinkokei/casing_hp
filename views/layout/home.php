@@ -32,142 +32,13 @@
   </section>
   <?php } ?>
   <!-- Main content -->
+<!-- <link rel="stylesheet" type="text/css" href="../assets/ea/code/css/highcharts.css" /> -->
+<!-- <script src="../assets/ea/code/js/highcharts-3d.js"></script>
+<script src="../assets/ea/code/js/modules/exporting.js"></script> -->
   <section class="content">
-        <!-- Small boxes (Stat box) -->
-      <!-- <div class="row"> -->
-          <!-- <div class="col-md-3 col-xs-6 hide-on-mobile"> -->
-              <!-- small box -->
-              <!-- <div class="small-box bg-white home_back1">
-                  <div class="inner">
-                      <h3>
-                          <?= $date_now ?>
-                      </h3>
-                      <p>
-                         Tanggal
-                      </p>
-                  </div>
-                  <div class="icon home_icon1">
-                  </div>
-              </div>
-          </div> //col -->
-          <!-- <div class="col-md-3 col-xs-6 hide-on-mobile"> -->
-              <!-- small box -->
-              <!-- <div class="small-box bg-white home_back2">
-                  <div class="inner">
-                      <h3>
-                          <?= $jumlah_penjualan ?>
-                      </h3>
-                      <p>
-                          Jumlah Penjualan
-                      </p>
-                  </div>
-                  <div class="icon home_icon2">
-                  </div>
-              </div> -->
-          <!-- </div>./col -->
-          <!-- <div class="col-md-3 col-xs-6 hide-on-mobile"> -->
-              <!-- small box -->
-             <!--  <div class="small-box bg-white home_back3">
-                  <div class="inner">
-                    <?php echo "<span style='font-size:20px'>Rp. </span>".$total_omset ?>
-                      <h3>
-                      </h3>
-                      <p>
-                          Total Omset
-                      </p>
-                  </div>
-                  <div class="icon home_icon3">
-                  </div>
-              </div> -->
-          <!-- </div>./col -->
-         <!--  <div class="col-md-3 col-xs-6 hide-on-mobile">
-              <div class="small-box bg-white home_back4" >
-                  <div class="inner" style="height:90px;">
-                      <h3 class="hide-on-mobile320" style="font-size:16px;">
-                         <?= $menu_terlaris?>
-                      </h3>
-                      <p>
-                         Menu Terlaris
-                      </p>
-                  </div>
-                  <div class="icon home_icon4">
-                  </div>
-              </div> -->
-          <!-- </div>./col -->
-          <!-- <div class="col-md-4 show-on-mobile320">
-            <div class="small-box bg-white home_back1">
-              <h3>
-                Tanggal
-                  <?= $date_now ?>
-              </h3>
-              <br>
-              <h>Jumlah Penjualan : </h>
-              <h3 style="margin-top:0;">
-                  <?= $jumlah_penjualan ?>
-              </h3>
-              <br>
-              <h>Total Omset</h>
-              <h3 style="margin-top:0;">
-                  <?php echo "<span style='font-size:20px'>Rp. </span>".$total_omset ?>
-              </h3>
-              <br>
-              <h>Menu Terlaris</h>
-              <h3 style="font-size:12px;">
-                 <?= $menu_terlaris?>
-              </h3>
-              <br> -->
-                <!-- <div class="input-group">
-                  <div class="input-group-addon">
-                      <i class="fa fa-calendar"></i>
-                  </div>
-                  <input type="text" required class="form-control pull-left" id="reservation2" name="i_date" value="<?= $date_default?>"/>
-                </div>/.input group -->
-            <!-- </div>
-          </div>
-          </br>
-          <div class="col-md-4 show-on-mobile720" style="padding-top: 20px;">
-            <div class="small-box bg-white home_back1 text-center">
-              <h3>
-                Tanggal
-                  <?= $date_now ?>
-              </h3>
-              <br>
-              <h>Jumlah Penjualan : </h>
-              <h3 style="margin-top:0;">
-                  <?= $jumlah_penjualan ?>
-              </h3>
-              <br>
-              <h>Total Omset</h>
-              <h3 style="margin-top:0;">
-                  <?php echo "<span style='font-size:20px'>Rp. </span>".$total_omset ?>
-              </h3>
-              <br>
-              <h>Menu Terlaris</h>
-              <h3 style="font-size:12px;">
-                 <?= $menu_terlaris?>
-              </h3>
-              <br> -->
-                <!-- <div class="input-group">
-                  <div class="input-group-addon">
-                      <i class="fa fa-calendar"></i>
-                  </div>
-                  <input type="text" required class="form-control pull-left" id="reservation2" name="i_date" value="<?= $date_default?>"/>
-                </div>/.input group -->
-            <!-- </div> -->
-          <!-- </div> -->
-      <!-- </div> //row -->
-      <div class="row">
-          
-        <div class="col-xs-12 hide-on-mobile320">
-            
-          <img src="../img/new/casing.png" style="width:100%; height: 300px;" />
-        </div>
-      </div>
-      </br>
-      
-    <!-- TOP Food-->
+    <div id="container" style="height: 400px; width: : 310px"></div>
     <div class="row hide-on-mobile320">
-          <div class="col-md-6">    
+          <div class="col-md-6">
               <form role="form" action="<?= $action?>" method="post">
                 <div class="box">
                   <div class="box-body2 table-responsive">
@@ -199,18 +70,18 @@
                                   <thead>
                                       <tr>
                                       <th width="5%">No</th>
-                                          <th>Nama Menu</th>
+                                          <th>Nama Item</th>
                                           <th>Qty</th>
                                       </tr>
                                   </thead>
                                   <tbody>
                                       <?php
                                      $no = 1;
-                                      while($row_top_food = mysql_fetch_array($query_top_food)){ ?>
+                                      while($row_top = mysql_fetch_array($query_top)){ ?>
                                         <tr <?php if($no == 1){ ?> class="top_food_tr"<?php } ?>>
                                         <td><?php if($no == 1){ ?><div class="top_food"><?= $no ?></div><?php }else{ ?><?= $no ?><?php } ?></td>
-                                        <td><?= $row_top_food['menu_name']?></td>
-                                        <td><?= $row_top_food['jumlah']?></td>
+                                        <td><?= $row_top['item_name']?></td>
+                                        <td><?= $row_top['jumlah']?></td>
                                         </tr>
                                       <?php $no++; } ?>
                                   </tbody>
@@ -218,11 +89,11 @@
                                   </tfoot>
                               </table>
                           <!-- </div>     -->
-                          
+
                   </div><!-- /.box-body -->
                 </div>
               </div><!-- /.box -->
-            </form>      
+            </form>
           </div>
   <!-- stok limit -->
           <div class="col-md-6">
@@ -240,7 +111,6 @@
                             </tr>
                         </thead>
                         <?php
-		                      $query_stock_limit = select_stock_limit();
 		                      while($row_stock_limit = mysql_fetch_array($query_stock_limit)){ ?>
                             <tr>
                               <td><?= ($row_stock_limit['item_name']); ?></td>
@@ -253,7 +123,7 @@
               </div><!-- /.box -->
           </div>
       </div>
-      <dic class="row">
+      <dic class="row" style="display: none;">
       <!-- history waiter -->
           <div class="col-md-12 hide-on-mobile320">
              <div class="box">
@@ -290,3 +160,98 @@
           </div>
       </div>
   </section><!-- /.content -->
+  <script type="text/javascript">
+  var series_chart = [];
+  $(document).ready(function(){
+    var utc_date = [];
+    var normal_date = [];
+    var date   = [];
+    var date_1 = [];
+    var date_2 = [];
+    var date_3 = [];
+    var date_utc1 = [];
+    var date_utc2 = '';
+    var aa_date = '';
+    var pembelian = [];
+    var penjualan = [];
+    var date_parse_to_hc_pembelian = [];
+    var date_parse_to_hc_penjualan = [];
+    var data_hc = '';
+    var date_parse_to_hc_pembelian_ = [];
+    var date_parse_to_hc_penjualan_ = [];
+    var pembelian_ = '';
+    function get_val_chart()
+    {
+      $.ajax({
+        dataType  : "json",
+        data      : "get",
+        url       : "home.php?page=Highcharts",
+        success   : function(data){
+          $.each(data, function(index, value){
+            pembelian = value.journal_credit;
+            penjualan = value.journal_debit;
+            aa_date   = value.journal_date;
+            date      = aa_date.split("-");
+            date_parse_to_hc_pembelian = [Date.UTC(date[0], date[1], date[2]), parseInt(pembelian)];
+            date_parse_to_hc_pembelian_.push(date_parse_to_hc_pembelian);
+            date_parse_to_hc_penjualan = [Date.UTC(date[0], date[1], date[2]), parseInt(penjualan)];
+            date_parse_to_hc_penjualan_.push(date_parse_to_hc_penjualan);
+          });
+          Highcharts_(date_parse_to_hc_pembelian_, date_parse_to_hc_penjualan_);
+        }
+      });
+    }
+    get_val_chart();
+  function Highcharts_(pembelian, penjualan)
+  {
+    // console.log(data);
+    Highcharts.chart('container', {
+        chart: {
+            type: 'spline'
+        },
+        title: {
+            text: ''
+        },
+        subtitle: {
+            text: 'Grafik Penjualan dan Pembelian'
+        },
+        xAxis: {
+            type: 'datetime',
+            dateTimeLabelFormats: { // don't display the dummy year
+                month: '%e. %b',
+                year: '%b'
+            },
+            title: {
+                text: 'Date'
+            }
+        },
+        yAxis: {
+            title: {
+                text: ''
+            },
+            min: 0
+        },
+        tooltip: {
+            headerFormat: '<b>{series.name}</b><br>',
+            pointFormat: '{point.x:%e. %b}: {point.y:.2f} m'
+        },
+        plotOptions: {
+            spline: {
+                marker: {
+                    enabled: true
+                }
+            }
+        },
+        series: [{
+            name: 'Pembelian',
+            data: pembelian
+        }, {
+            name: 'Penjualan',
+            data: penjualan
+        }]
+        // series:[]
+      });
+  }
+    // console.log(series_chart);
+  });
+  </script>

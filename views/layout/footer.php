@@ -33,8 +33,6 @@
 		<script src="../js/button/classie.js"></script>
         <!--popmodal-->
         <script src="../js/popmodal/popModal.js"></script>
-        <!--script js chart -->
-        <script src="../js/chart/Chart.js" type="text/javascript"></script>
       <!-- bootstrap time picker -->
 
       <!-- export -->

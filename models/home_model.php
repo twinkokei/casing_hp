@@ -23,28 +23,26 @@ function get_total_omset($date, $where){
 	return $result;
 }
 function get_menu_terlaris($date, $where){
-	$query = mysql_query("SELECT a.menu_id, a.menu_price, a.menu_name, jumlah
-								FROM menus a
-								JOIN (
-
-									SELECT sum( transaction_detail_qty ) AS jumlah, menu_id
-									FROM transaction_details a
-									JOIN transactions b on b.transaction_id = a.transaction_id
-									WHERE  b.transaction_date >= '$date 00:00:00'
-									AND b.transaction_date <= '$date 23:59:59'
-									$where
-									GROUP BY menu_id
-								) AS b ON b.menu_id = a.menu_id
-								order by jumlah desc, menu_id asc
+	$query = mysql_query("SELECT a.item_id, a.item_price, a.item_name, b.jumlah
+												FROM items a
+												JOIN (
+													SELECT SUM( transaction_detail_qty ) AS jumlah, item_id
+													FROM transaction_details a
+													JOIN transactions b ON b.transaction_id = a.transaction_id
+													WHERE  b.transaction_date >= '$date 00:00:00'
+													AND b.transaction_date <= '$date 23:59:59'
+													$where
+													GROUP BY item_id
+												) AS b ON b.item_id = a.item_id
+								order by jumlah desc, item_id asc
 								limit 1
-
 							 ");
 	$result = mysql_fetch_array($query);
-	$result = ($result['menu_name']) ? $result['menu_name'] : "-";
+	$result = ($result['item_name']) ? $result['item_name'] : "-";
 	return $result;
 }
 
-function select_top_food($date1, $date2, $where){
+function select_top($date1, $date2, $where){
 	$where_date1 = "";
 	if($date1){
 		$where_date1 = " AND  b.transaction_date >= '$date1 00:00:00' ";
@@ -53,23 +51,19 @@ function select_top_food($date1, $date2, $where){
 	if($date2){
 		$where_date2 = " AND b.transaction_date <= '$date2 23:59:59' ";
 	}
-	$query = mysql_query("SELECT a.menu_id, a.menu_price, a.menu_name, jumlah
-								FROM menus a
-								JOIN (
-
-									SELECT sum( transaction_detail_qty ) AS jumlah, menu_id
-									FROM transaction_details a
-									JOIN transactions b on b.transaction_id = a.transaction_id
-									where transaction_detail_id <> 0
-									$where_date1
-									$where_date2
-									$where
-									GROUP BY menu_id
-								) AS b ON b.menu_id = a.menu_id
-								order by jumlah desc, menu_id asc
-
-
-							 ");
+	$query = mysql_query("SELECT a.item_id, a.item_price, a.item_name, b.jumlah
+												FROM items a
+												JOIN (
+													SELECT sum(transaction_detail_qty) AS jumlah, item_id
+													FROM transaction_details a
+													JOIN transactions b on b.transaction_id = a.transaction_id
+													where transaction_detail_id <> 0
+													$where_date1
+													$where_date2
+													$where
+													GROUP BY item_id
+												) AS b ON b.item_id = a.item_id
+												order by b.jumlah desc, a.item_id asc");
 	return $query;
 }
 

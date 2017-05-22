@@ -46,7 +46,6 @@ if(!$_SESSION['login']){
        <link href="../css/export/buttons.dataTables.min.css" rel="stylesheet">
        <!-- responsive -->
 	     <link href="../css/responsive/layout.css" rel="stylesheet">
-             <script src="../js/chart/Chart.js" type="text/javascript"></script>
         <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
         <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
         <!--[if lt IE 9]>
@@ -177,10 +176,10 @@ if(!$_SESSION['login']){
                                            while($row_stock_limit = mysql_fetch_array($query_stock_limit)){
                                             ?>
                                             <tr>
-                                            <?php 
-                                            
+                                            <?php
+
 //                                                echo $row_stock_limit['item_name'];
-//                                                echo $row_stock_limit['item_stock_qty']; 
+//                                                echo $row_stock_limit['item_stock_qty'];
 //                                                echo $row_stock_limit['unit_name'];
                                             ?>
                                                <td><?= $row_stock_limit['item_name']; ?></td>

@@ -1,82 +1,8 @@
+<link href="../css/transaction.css" rel="stylesheet" type="text/css"/>
 <!-- select2 -->
 <script type="text/javascript" src="../select2/dist/js/select2.js"></script>
 <!-- end select2 -->
 <script type="text/javascript" src="../js/search2/jcfilter.min.js"></script>
-<!-- <script>
-$("#entersomething").keyup(function(e){
-   var code = e.which; // recommended to use e.which, it's normalized across browsers
-   alert(code);
-   if(code==13)e.preventDefault();
-   if(code==32||code==13||code==188||code==186){
-       $("#displaysomething").html($(this).val());
-   } // missing closing if brace
-});
-</script> -->
-<!-- <script type="text/javascript">
-	function filter_cat(){
-		alert("test");
-	}
-	function CurrencyFormat(number)
-	{
-	   var decimalplaces = 0;
-	   var decimalcharacter = "";
-	   var thousandseparater = ",";
-	   number = parseFloat(number);
-	   var sign = number < 0 ? "-" : "";
-	   var formatted = new String(number.toFixed(decimalplaces));
-	   if( decimalcharacter.length && decimalcharacter != "." ) { formatted = formatted.replace(/\./,decimalcharacter); }
-	   var integer = "";
-	   var fraction = "";
-	   var strnumber = new String(formatted);
-	   var dotpos = decimalcharacter.length ? strnumber.indexOf(decimalcharacter) : -1;
-	   if( dotpos > -1 )
-	   {
-	      if( dotpos ) { integer = strnumber.substr(0,dotpos); }
-	      fraction = strnumber.substr(dotpos+1);
-	   }
-	   else { integer = strnumber; }
-	   if( integer ) { integer = String(Math.abs(integer)); }
-	   while( fraction.length < decimalplaces ) { fraction += "0"; }
-	   temparray = new Array();
-	   while( integer.length > 3 )
-	   {
-	      temparray.unshift(integer.substr(-3));
-	      integer = integer.substr(0,integer.length-3);
-	   }
-	   temparray.unshift(integer);
-	   integer = temparray.join(thousandseparater);
-	   return sign + integer + decimalcharacter + fraction;
-	}
-	function get_total_price(){
-		var total_harga = 0;
-		<?php
-		while($row2 = mysql_fetch_array($query2)){
-		?>
-		var jumlah = document.getElementById("i_jumlah_"+<?= $row2['menu_id']?>).value;
-		var harga = document.getElementById("i_harga_"+<?= $row2['menu_id']?>).value;
-
-		var total = jumlah * harga;
-		total_harga = total_harga + total;
-		<?php
-		}
-		?>
-		document.getElementById("i_total_harga").value = total_harga;
-		document.getElementById("i_total_harga_rupiah").value = CurrencyFormat(total_harga);
-	}
-
-	function confirm_delete_history(id){
-		var a = confirm("Anda yakin ingin menghapus order ini ?");
-		var table_id = document.getElementById("i_table_id").value;
-
-		if(a==true){
-			window.location.href = 'transaction.php?page=delete_history&table_id=' + table_id + '&id=' + id;
-		}
-	}
-
-	function load_data_history(id)
-	{
-	}
-	</script> -->
 	<?php
 	if(isset($_GET['did']) && $_GET['did'] == 1){
 		?>
@@ -126,8 +52,8 @@ $("#entersomething").keyup(function(e){
 													id="date_picker1" name="i_date" value="<?= $date ?>"/>
 												</div><!-- /.input group -->
 												</div>
-											</div> 
-                      <div class="col-md-3">
+											</div>
+                      <div class="col-md-3" style="display: none;">
                         <div class="form-group">
                           <label>Order Type </label>
                           <select name="i_tot_id[]" id="i_tot_id" class="selectpicker show-tick form-control" data-live-search="true" onchange="order_member()">
@@ -155,7 +81,7 @@ $("#entersomething").keyup(function(e){
   										<div class="col-md-3">
   										  <div class="form-group">
   											<label>Member</label>
-                        <select id="i_member" name="i_member" size="1" class="selectpicker show-tick form-control" 
+                        <select id="i_member" name="i_member" size="1" class="selectpicker show-tick form-control"
                         data-live-search="true">
                         <option value="0"></option>
                         <?php
@@ -164,7 +90,7 @@ $("#entersomething").keyup(function(e){
                          <option value="<?= $r_member['member_id']?>"><?= $r_member['member_name']?>
                          </option>
                          <?}?>
-                        </select> 
+                        </select>
   											</div>
   										</div>
                       <div class="col-md-3">
@@ -177,10 +103,10 @@ $("#entersomething").keyup(function(e){
                             if ($_SESSION['branch_id']) { $branch_id=$_SESSION['branch_id']; }?>
                             <option value="<?= $r_branch['branch_id'] ?>"
                             <?php if($branch_id==$r_branch['branch_id']){echo "selected";}?>>
-                              <?= $r_branch['branch_name']?> 
+                              <?= $r_branch['branch_name']?>
                             </option>
                           <?}?>
-                          </select>                                            
+                          </select>
                         </div>
                       </div>
   									</div>
@@ -199,7 +125,7 @@ $("#entersomething").keyup(function(e){
 									</div>
 									<div class="col-md-6">
 										<div class="">
-													<input type="text" name="" value="" class="price-tag form-control normal" readonly>
+													<input type="text" name="" value="" id="total_all" class="price-tag form-control normal" readonly>
 												</div><!-- /input-group -->
 									</div>
 								</div>
@@ -256,4 +182,365 @@ $("#entersomething").keyup(function(e){
 				</div> <!-- table -->
 			</div> <!-- row -->
 </section>
+<script type="text/javascript">
+var items = [];
+var html = '';
+var add_item_list = [];
+var storage_item_detail = JSON.parse(localStorage.getItem('item_detail'));
+if (storage_item_detail) {
+		storage_item_detail = [];
+		localStorage.setItem('item_detail', JSON.stringify(storage_item_detail));
+}
 
+	function set_harga() {
+		var i_pijat = $('#i_pijat').val();
+		var harga = $('#i_pijat option:selected').data('harga')||0;
+		$('#grand_total').val(harga)||0;
+		$('#grand_total_currency').val(toRp(harga))||0;
+		console.log(harga);
+	}
+
+	$('body').on('click', '.btn-add-cart', function (e) {
+      $.fn.addCart($(this));
+      e.preventDefault();
+  });
+
+
+$(document).ready(function(){
+
+	set_harga();
+
+	// var item_detail = [];
+	// var search_data = [];
+
+	$.fn.getItems = function(){
+		$.get("transaction.php?page=get_items",function(data){
+						var no = 1;
+						$.each(JSON.parse(data), function (index, value) {
+								items.push(value);
+								html += '<tr>\
+													<td style="text-align:center;">'+no+'</td>\
+													<td id="item-name">'+value.item_name+'\
+													<td class="text-right">'+toRp(value.item_price)+'</td><td class="text-center">\
+														<button data-disc="" data-price="'+value.item_price+'" \
+														data-qty="1" data-name="'+value.item_name+'" \
+														data-id="'+value.item_id+'" data-has-promo=""\
+														data-status-aktif="'+value.status_id+'"\
+														data-promo-item-name="" data-promo-gratis="" data-promo-qty="" \
+														class="btn btn-success btn-xs btn-add-cart">\
+															<i class="fa fa-plus"></i>\
+														</button>\
+													</td>\
+												</tr>';
+									no++;
+								});
+
+						$("#data_items").html(html);
+						// $('#table_item').animate({scrollTop: $('#data_items').prop("scrollHeight")}, 500);
+				}).fail(function(data){
+							alert(data);
+					});
+					// alert();
+					// $('#table_item').animate({scrollTop: $('#data_items').prop("scrollHeight")}, 500);
+	}
+
+	$.fn.addCart = function(btn){
+
+		var this_name 			= btn.attr('data-name');
+    var this_id 				= parseInt(btn.attr('data-id'));
+		var this_harga_jual = btn.attr('data-price');
+		var this_status 		= btn.attr('data-status-aktif');
+
+		var this_qty = 1;
+		var item_exist = 0;
+		var item_exist_index = -1;
+
+			if (add_item_list) {
+				$.each(add_item_list, function (index, value) {
+								if (value.item_id == this_id) {
+										item_exist = 1;
+										item_exist_index = index;
+										this_qty = this_qty + value.item_qty;
+								}
+						});
+			}
+
+			if (item_exist) add_item_list.splice(item_exist_index, 1);
+
+			var new_item_detail = {
+							'item_name'		: this_name,
+							'item_id'			: this_id,
+							'item_price'	: this_harga_jual,
+							'item_qty'		: this_qty,
+							'item_status'	: this_status
+					};
+
+
+			add_item_list.push(new_item_detail);
+			localStorage.setItem('item_detail', JSON.stringify(add_item_list));
+			$.fn.refreshChart();
+
+	}
+
+	$.fn.refreshChart = function () {
+					// $.fn.refreshSales();
+					storage_item_detail = JSON.parse(localStorage.getItem('item_detail'));
+					console.log(storage_item_detail);
+					var html = '';
+					var html_struk = '';
+					var input_sales_detail = '';
+					var intSubTotal = 0;
+					var total_item = 0;
+					var total_item_qty = 0;
+					var total_all = 0;
+					//
+					// $.each(storage_sales_detail, function (index, value) {
+					// // 		var item_disc = value.item_disc;
+					// // 		if( item_disc ) has_discount = 1;
+					// // });
+					//
+					$("#tbody_sales_cart").empty();
+					$.each(storage_item_detail, function (index, value) {
+
+							var item_name = value.item_name;
+							var item_id = value.item_id;
+							var item_price = value.item_price;
+							var item_qty = value.item_qty;
+							var item_status = value.item_status;
+							var item_total = item_qty * item_price;
+
+							intSubTotal += item_total;
+							var itemPrice = Intl.NumberFormat().format(item_price);
+							var itemTotal = Intl.NumberFormat().format(item_total);
+							total_all = total_all+itemTotal;
+							$('#total_all').val(total_all);
+							// var itemDiscTotal = Intl.NumberFormat().format(item_disc_total);
+
+							html += '<tr>';
+							html += '<td class="text-center">';
+							html += '<div class="input-group input-group-sm">';
+							html += '<span class="input-group-btn">';
+							html += '<button data-id="" class="btn btn-danger btn-sm btn-decrease-cart" type="button"><i class="fa fa-minus"></i></button>';
+							html += '</span>';
+							html += '<input type="text"  style="text-align:center;width:80px;" class="form-control input-sm qty" value="' + item_qty + '">';
+							html += '<span class="input-group-btn">';
+							html += '<button data-id="" class="btn btn-success btn-sm btn-increase-cart" type="button"><i class="fa fa-plus"></i></button>';
+							html += '</span>';
+							html += '</div>';
+							html += '</td>';
+							html += '<td>' + item_name;
+							html += '</td>';
+							html += '<td class="text-right">'+itemPrice+'</td>';
+							html += '<td class="text-right">'+itemTotal+'</td>';
+							html += '<td style="text-align: right;">' +
+											'<div class="btn-group">' +
+											'<button type="button" data-id="'+item_id+'" class="btn btn-danger" onclick="removeCart(this);"><i class="fa fa-trash-o"></i></button>'+
+											'</div>' +
+											'</td>';
+							html += '</tr>';
+							$("#tbody_sales_cart").html(html);
+							// console.log(item_name);
+			});
+
+			// console.log(storage_item_detail);
+		};
+
+		$('#search').keyup(function(){
+			var word = $(this).val();
+			var this_data = '';
+			word = word.toLowerCase();
+
+			var search_data = [];
+
+			  $.each(items, function (index, value) {
+					var name = value.item_name.toLowerCase();
+
+					if( name.indexOf(word) > -1){
+						this_data = {
+                        'item_id'		: value.item_id,
+                        'item_name' : value.item_name,
+												'item_price' : value.item_price
+												// 'item_status'			: value.item_status
+                    }
+
+						search_data.push(this_data);
+						// console.log(search_data);
+					}
+				});
+				var no =1;
+				var html = '';
+				// $("#data_items").empty();
+				$("#data_items").html(html);
+				$.each(search_data, function (index, value) {
+				// 	// var item_name  = value.item_name;
+						html += '<tr>\
+											<td style="text-align:center;">'+no+'</td>\
+											<td id="item-name">'+value.item_name+'\
+											<td class="text-right">'+toRp(value.item_price)+'</td><td class="text-center">\
+												<button data-disc="" data-price="'+value.item_price+'" \
+												data-qty="1" data-name="'+value.item_name+'" \
+												data-id="'+value.item_id+'" data-has-promo=""\
+												data-status-aktif="'+value.status_id+'"\
+												data-promo-item-name="" data-promo-gratis="" data-promo-qty="" \
+												class="btn btn-success btn-xs btn-add-cart">\
+													<i class="fa fa-plus"></i>\
+												</button>\
+											</td>\
+										</tr>';
+							no++;
+				// 			// console.log(value.item_price);
+						});
+						$("#data_items").html(html);
+
+		});
+
+	$("body").on("click", ".btn-decrease-cart", function (event) {
+			var qty = $(this).parent().parent().find("input:text");
+			var value = qty.val();
+			var value = parseInt(value);
+      if (value > 1) {
+          var item_row = $(this).parent().parent().parent().parent();
+          var item_index = item_row.index();
+          var this_name = '';
+          var this_id = 0;
+          var this_price = 0;
+          var this_qty = 0;
+          var this_total = 0;
+          var item_exist = 0;
+          var item_exist_index = -1;
+          if (add_item_list) {
+              $.each(add_item_list, function (index, value) {
+                  if (item_index == index) {
+                      var qty = value.item_qty - 1;
+                      this_name = value.item_name;
+                      this_id = value.item_id;
+                      this_price = value.item_price;
+											this_qty = qty;
+                      this_total = value.item_total * this_qty;
+                      item_exist = 1;
+                      item_exist_index = index;
+                  }
+              });
+          }
+  		}
+			var new_data = {
+                    'item_name': this_name,
+                    'item_id': this_id,
+                    'item_price': this_price,
+                    'item_qty': this_qty,
+                };
+			add_item_list[item_exist_index] = new_data;
+			localStorage.setItem('item_detail', JSON.stringify(add_item_list));
+			// console.log(add_item_list);
+			$.fn.refreshChart();
+      event.preventDefault();
+	});
+
+	$("body").on("click", ".btn-increase-cart", function (event) {
+		var qty = $(this).parent().parent().find("input:text");
+		var value = qty.val();
+		var value = parseInt(value);
+
+				var item_row = $(this).parent().parent().parent().parent();
+				var item_index = item_row.index();
+				var this_name = '';
+				var this_id = 0;
+				var this_price = 0;
+				var this_qty = 0;
+				var this_total = 0;
+				var item_exist = 0;
+				var item_exist_index = -1;
+				if (add_item_list) {
+						$.each(add_item_list, function (index, value) {
+								if (item_index == index) {
+										var qty = value.item_qty + 1;
+										this_name = value.item_name;
+										this_id = value.item_id;
+										this_price = value.item_price;
+										this_qty = qty;
+										this_total = value.item_total * this_qty;
+										item_exist = 1;
+										item_exist_index = index;
+								}
+						});
+				}
+
+		var new_data = {
+									'item_name': this_name,
+									'item_id': this_id,
+									'item_price': this_price,
+									'item_qty': this_qty,
+							};
+		add_item_list[item_exist_index] = new_data;
+		localStorage.setItem('item_detail', JSON.stringify(add_item_list));
+		// console.log(add_item_list);
+		$.fn.refreshChart();
+		event.preventDefault();
+	});
+
+
+	$.fn.getItems();
+
+
+	$("#form_pijat").submit(function(e) {
+
+		e.preventDefault(); // avoid to execute the actual submit of the form.
+
+    var url = "transaction.php?page=simpan_transaksi";
+		var storage_item_detail = JSON.parse(localStorage.getItem('item_detail'));
+		var item_id 	= [];
+		var item_qty 	= [];
+		var item_price = [];
+
+		$.each(storage_item_detail, function(index, value){
+
+			item_id.push(value.item_id);
+			item_qty.push(value.item_qty);
+			item_price.push(value.item_price);
+
+		});
+		var paramArr = $("#form_pijat").serializeArray();
+	  paramArr.push( {name:'item_id', value:item_id },
+	                 {name:'item_qty', value:item_qty },
+	                 {name:'item_price', value:item_price });
+
+    $.ajax({
+           type: "POST",
+           url: url,
+           data: paramArr, // serializes the form's elements.
+           success: function(data)
+           {
+               // alert(data); // show response from the php script.
+               window.location.href="transaction.php?page=form_statement&id=data";
+           }
+         });
+		return false;
+});
+
+});
+
+function removeCart(elem)
+{
+	var item_id			=	 $(elem).attr('data-id');
+	var bapak 			= elem.parentElement;
+	var mbah				= bapak.parentElement;
+	var mbahembah		= mbah.parentElement;
+	var itemdelete	= '';
+	var row					= '';
+
+	storage_item_detail = JSON.parse(localStorage.getItem('item_detail'));
+	for (var i = 0; i < storage_item_detail.length; i++) {
+		itemdelete = storage_item_detail[i].item_id;
+		if (itemdelete==item_id) {
+			storage_item_detail[i].remove;
+			row = i;
+
+			break;
+		}
+	}
+	mbahembah.remove();
+	storage_item_detail.splice(row, 1);
+	localStorage.setItem('item_detail', JSON.stringify(storage_item_detail));
+}
+// this.parentElement.style.display = 'none';
+</script>

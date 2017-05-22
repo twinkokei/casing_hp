@@ -42,8 +42,8 @@ switch ($page) {
 		$date_now = format_date(date("Y-m-d"));
 		$menu_terlaris = get_menu_terlaris(date("Y-m-d"), $where_branch);
 
-		$query_top_food = select_top_food($date1, $date2, $where_branch);
-		$query_stock_limit = select_stock_limit();
+		$query_top = select_top($date1, $date2, $where_branch);
+		$query_stock_limit = select_stock_limit($_SESSION['branch_id']);
 		$query_history = select_history();
 
 		include '../views/layout/home.php';
