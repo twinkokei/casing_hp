@@ -28,7 +28,7 @@
 		<?php
 	}
 	?>
-	<form action="<?= $action ?>" method="POST" enctype="multipart/form-data" role="form">
+	<form id="formpenjual"  action="<?= $action ?>" method="POST" enctype="multipart/form-data" role="form">
 		<!-- Main content -->
 		<section class="content" style="padding-top: 0">
 			<div class="col-md-12">
@@ -125,7 +125,8 @@
 									</div>
 									<div class="col-md-6">
 										<div class="">
-													<input type="text" name="" value="" id="total_all" class="price-tag form-control normal" readonly>
+													<input type="text" name="" value="" id="total_allcurr" class="price-tag form-control normal" style="text-align: right;" readonly>
+													<input type="hidden" name="" value="" id="total_all" class="price-tag form-control normal">
 												</div><!-- /input-group -->
 									</div>
 								</div>
@@ -169,7 +170,7 @@
 								</div>
 							</div> <!-- row -->
 					<div class="box-footer" style="background-color: #fff; border-color:#ddd;">
-	            <button id="" type="submit" class="btn btn-primary">Save</button>
+	            <button id="btn-bayar" type="button" class="btn btn-primary">Bayar</button>
 	            <a href="<?= $close_button?>">
 								<button type="button" name="button" class="btn btn-danger" >
 									Close
@@ -187,7 +188,8 @@ var items = [];
 var html = '';
 var add_item_list = [];
 var storage_item_detail = JSON.parse(localStorage.getItem('item_detail'));
-if (storage_item_detail) {
+
+if (!storage_item_detail) {
 		storage_item_detail = [];
 		localStorage.setItem('item_detail', JSON.stringify(storage_item_detail));
 }
@@ -197,7 +199,6 @@ if (storage_item_detail) {
 		var harga = $('#i_pijat option:selected').data('harga')||0;
 		$('#grand_total').val(harga)||0;
 		$('#grand_total_currency').val(toRp(harga))||0;
-		console.log(harga);
 	}
 
 	$('body').on('click', '.btn-add-cart', function (e) {
@@ -236,12 +237,9 @@ $(document).ready(function(){
 								});
 
 						$("#data_items").html(html);
-						// $('#table_item').animate({scrollTop: $('#data_items').prop("scrollHeight")}, 500);
 				}).fail(function(data){
 							alert(data);
 					});
-					// alert();
-					// $('#table_item').animate({scrollTop: $('#data_items').prop("scrollHeight")}, 500);
 	}
 
 	$.fn.addCart = function(btn){
@@ -282,10 +280,29 @@ $(document).ready(function(){
 
 	}
 
+
+		$("body").on("click", ".removeCart", function (event) {
+				var item_id 		= $(this).attr('data-id');
+				var bapak 			= $(this).parent();
+				var mbah				= bapak.parent();
+				var mbahembah		= mbah.parent();
+				var item_index 	= mbahembah.index();
+
+				$.each(add_item_list, function (index, value) {
+							if (value.item_id == item_id) {
+									add_item_list.splice(index, 1);
+									return false;
+							}
+					});
+					localStorage.setItem('item_detail', JSON.stringify(add_item_list));
+					$.fn.refreshChart();
+		});
+
+
+
 	$.fn.refreshChart = function () {
-					// $.fn.refreshSales();
 					storage_item_detail = JSON.parse(localStorage.getItem('item_detail'));
-					console.log(storage_item_detail);
+
 					var html = '';
 					var html_struk = '';
 					var input_sales_detail = '';
@@ -293,28 +310,25 @@ $(document).ready(function(){
 					var total_item = 0;
 					var total_item_qty = 0;
 					var total_all = 0;
-					//
-					// $.each(storage_sales_detail, function (index, value) {
-					// // 		var item_disc = value.item_disc;
-					// // 		if( item_disc ) has_discount = 1;
-					// // });
-					//
+					var item_total  = 0;
+					var item_name = 0
+					var item_id = 0;
+					var item_price = 0;
+					var item_qty = 0;
+					var item_status = 0;
+
 					$("#tbody_sales_cart").empty();
 					$.each(storage_item_detail, function (index, value) {
-
-							var item_name = value.item_name;
-							var item_id = value.item_id;
-							var item_price = value.item_price;
-							var item_qty = value.item_qty;
-							var item_status = value.item_status;
-							var item_total = item_qty * item_price;
+							item_name 	= value.item_name;
+							item_id 		= value.item_id;
+							item_price 	= value.item_price;
+							item_qty 		= value.item_qty;
+							item_status = value.item_status;
+							item_total 	= item_qty * item_price;
 
 							intSubTotal += item_total;
 							var itemPrice = Intl.NumberFormat().format(item_price);
 							var itemTotal = Intl.NumberFormat().format(item_total);
-							total_all = total_all+itemTotal;
-							$('#total_all').val(total_all);
-							// var itemDiscTotal = Intl.NumberFormat().format(item_disc_total);
 
 							html += '<tr>';
 							html += '<td class="text-center">';
@@ -334,15 +348,17 @@ $(document).ready(function(){
 							html += '<td class="text-right">'+itemTotal+'</td>';
 							html += '<td style="text-align: right;">' +
 											'<div class="btn-group">' +
-											'<button type="button" data-id="'+item_id+'" class="btn btn-danger" onclick="removeCart(this);"><i class="fa fa-trash-o"></i></button>'+
+											'<button type="button" data-id="'+item_id+'" class="btn btn-danger removeCart"><i class="fa fa-trash-o"></i></button>'+
 											'</div>' +
 											'</td>';
 							html += '</tr>';
 							$("#tbody_sales_cart").html(html);
-							// console.log(item_name);
 			});
 
-			// console.log(storage_item_detail);
+			var intSubTotalcur = Intl.NumberFormat().format(intSubTotal);
+
+			$('#total_allcurr').val(intSubTotalcur);
+			$('#total_all').val(intSubTotal);
 		};
 
 		$('#search').keyup(function(){
@@ -478,69 +494,61 @@ $(document).ready(function(){
 		event.preventDefault();
 	});
 
+	$("#btn-bayar").on('click', function(e) {
+			storage_item_detail = JSON.parse(localStorage.getItem('item_detail'));
+			var itemid = [];
+			var itemprice = [];
+			var itemqty = [];
+			var total_all = $('#total_all').val();
+			var member_id = $('#i_member').val();
+			var branch_id = $('#i_branch_id').val();
+			var date_picker1 = $('#date_picker1').val();
 
+			$.each(storage_item_detail, function(index, value){
+					itemid.push(value.item_id);
+					itemprice.push(value.item_price);
+					itemqty.push(value.item_qty);
+			});
+			var data = {
+				itemid : itemid,
+				itemqty: itemqty,
+				total_all : total_all,
+				member_id : member_id,
+				branch_id : branch_id,
+				date_picker1:date_picker1
+			}
+			getmodal('#medium_modal', 'transaction.php?page=bayar_popmodal&branch_id='+branch_id);
+	    e.preventDefault(); // avoid to execute the actual submit of the form.
+	});
 	$.fn.getItems();
-
-
-	$("#form_pijat").submit(function(e) {
-
-		e.preventDefault(); // avoid to execute the actual submit of the form.
-
-    var url = "transaction.php?page=simpan_transaksi";
-		var storage_item_detail = JSON.parse(localStorage.getItem('item_detail'));
-		var item_id 	= [];
-		var item_qty 	= [];
-		var item_price = [];
-
-		$.each(storage_item_detail, function(index, value){
-
-			item_id.push(value.item_id);
-			item_qty.push(value.item_qty);
-			item_price.push(value.item_price);
-
-		});
-		var paramArr = $("#form_pijat").serializeArray();
-	  paramArr.push( {name:'item_id', value:item_id },
-	                 {name:'item_qty', value:item_qty },
-	                 {name:'item_price', value:item_price });
-
-    $.ajax({
-           type: "POST",
-           url: url,
-           data: paramArr, // serializes the form's elements.
-           success: function(data)
-           {
-               // alert(data); // show response from the php script.
-               window.location.href="transaction.php?page=form_statement&id=data";
-           }
-         });
-		return false;
 });
 
-});
-
-function removeCart(elem)
-{
-	var item_id			=	 $(elem).attr('data-id');
-	var bapak 			= elem.parentElement;
-	var mbah				= bapak.parentElement;
-	var mbahembah		= mbah.parentElement;
-	var itemdelete	= '';
-	var row					= '';
-
-	storage_item_detail = JSON.parse(localStorage.getItem('item_detail'));
-	for (var i = 0; i < storage_item_detail.length; i++) {
-		itemdelete = storage_item_detail[i].item_id;
-		if (itemdelete==item_id) {
-			storage_item_detail[i].remove;
-			row = i;
-
-			break;
-		}
-	}
-	mbahembah.remove();
-	storage_item_detail.splice(row, 1);
-	localStorage.setItem('item_detail', JSON.stringify(storage_item_detail));
+function getmodal(modalid, url){
+	$(modalid).modal('show').find('.modal-content').load(url);
 }
+
+// function removeCart(elem)
+// {
+// 	var item_id			=	 $(elem).attr('data-id');
+// 	var bapak 			= elem.parentElement;
+// 	var mbah				= bapak.parentElement;
+// 	var mbahembah		= mbah.parentElement;
+// 	var itemdelete	= '';
+// 	var row					= '';
+//
+// 	storage_item_detail = JSON.parse(localStorage.getItem('item_detail'));
+// 	for (var i = 0; i < storage_item_detail.length; i++) {
+// 		itemdelete = storage_item_detail[i].item_id;
+// 		if (itemdelete==item_id) {
+// 			storage_item_detail[i].remove;
+// 			row = i;
+//
+// 			break;
+// 		}
+// 	}
+// 	mbahembah.remove();
+// 	storage_item_detail.splice(row, 1);
+// 	localStorage.setItem('item_detail', JSON.stringify(storage_item_detail));
+// }
 // this.parentElement.style.display = 'none';
 </script>

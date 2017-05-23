@@ -60,6 +60,23 @@ switch ($page) {
 		header("Location: home.php?page=list&preview=1&date=$date_default");
 	break;
 
+	case 'Highcharts':
+	$q_journal = select_journal();
+	while ($r_journal = mysql_fetch_array($q_journal)) {
+			$data[] = array(
+				'journal_id' 			=> $r_journal['journal_id'],
+				'journal_type_id' => $r_journal['journal_type_id'],
+				'journal_date' 		=> $r_journal['s_journal_date'],
+				'journal_debit' 	=> $r_journal['penjualan'],
+				'journal_credit' 	=> $r_journal['pembelian'],
+				'journal_piutang' => $r_journal['journal_piutang'],
+				'journal_hutang' => $r_journal['journal_hutang']
+			 );
+		}
+	echo json_encode($data);
+	break;
+
+
 }
 
 ?>

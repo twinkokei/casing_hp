@@ -64,8 +64,8 @@ if(!$_SESSION['login']){
             <script src="../js/footable/footable.paginate.js?v=2-0-1" type="text/javascript"></script>
             <script src="../js/footable/bootstrap-tab.js" type="text/javascript"></script>
          -->
-
         <script src="../js/jquery.js"></script>
+        <script src="../js/function.js" type="text/javascript"></script> 
         <script type="text/javascript">
         $(function(){
         $('a#logout').click(function(){

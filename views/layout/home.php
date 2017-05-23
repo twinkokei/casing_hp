@@ -1,3 +1,6 @@
+<script src="../assets/highcharts.js"></script>
+<script src="../assets/exporting.js"></script>
+
   <?php
   if(isset($_GET['did']) && $_GET['did'] == 1){
   ?>
@@ -43,7 +46,7 @@
                 <div class="box">
                   <div class="box-body2 table-responsive">
                     <div class="box-header">
-                        <h3 class="box-title">Top Food</h3>
+                        <h3 class="box-title">Top Item</h3>
                     </div>
                     <div class="box-body">
                         	<div class="col-md-6">
@@ -123,42 +126,6 @@
               </div><!-- /.box -->
           </div>
       </div>
-      <dic class="row" style="display: none;">
-      <!-- history waiter -->
-          <div class="col-md-12 hide-on-mobile320">
-             <div class="box">
-                <div class="box-header">
-                      <h3 class="box-title">History Waiter</h3>
-                </div>
-                  <div class="box-body2 table-responsive">
-                      <table id="example2" class="table table-bordered table-striped">
-                          <thead>
-                              <tr>
-                              	<th>Tanggal</th>
-                              	<th>Cabang</th>
-                                  <th>Ruang</th>
-                                  <th>Meja</th>
-                                  <th>Total</th>
-                                  <th>Waiter</th>
-                              </tr>
-                          </thead>
-                          <?php
-  		                      $query_history = select_history();
-  		                        while($row_history = mysql_fetch_array($query_history)){ ?>
-                                <tr>
-                                  <td><?= ($row_history['transaction_date']); ?></td>
-                                  <td><?= $row_history['branch_name'] ?></td>
-                                  <td><?= $row_history['building_name']?></td>
-                                  <td><?= $row_history['table_name']?></td>
-                                  <td><?= $row_history['transaction_total']?></td>
-                                  <td><?= $row_history['user_name']?></td>
-                                </tr>
-                              <?php } ?>
-                      </table>
-                  </div><!-- /.box-body -->
-              </div><!-- /.box -->
-          </div>
-      </div>
   </section><!-- /.content -->
   <script type="text/javascript">
   var series_chart = [];
@@ -204,7 +171,6 @@
     get_val_chart();
   function Highcharts_(pembelian, penjualan)
   {
-    // console.log(data);
     Highcharts.chart('container', {
         chart: {
             type: 'spline'

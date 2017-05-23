@@ -43,10 +43,6 @@ function read_stock($id){
   return $result;
 }
 
-function create_config($table, $data){
-	mysql_query("insert into $table values(".$data.")");
-	return mysql_insert_id();
-}
 
 function delete($id,$branch_id){
   mysql_query("delete from item_stocks where item_id = '$id' and branch_id = '$branch_id'");

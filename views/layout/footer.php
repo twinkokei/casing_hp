@@ -3,6 +3,28 @@
        <!--calendar -->
     </body>
 </html>
+<div id="largemodal" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+
+    </div>
+  </div>
+</div>
+<div id="medium_modal" class="modal fade" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+<div id="small_modal" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+  <div class="modal-dialog modal-sm" role="document">
+    <div class="modal-content">
+
+    </div>
+  </div>
+</div>
+
  <!-- jQuery 2.0.2 -->
 
         <script src="../js/function.js" type="text/javascript"></script>

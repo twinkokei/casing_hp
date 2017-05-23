@@ -40,5 +40,50 @@ switch ($page) {
 		}
 		echo json_encode($data);
 		break;
+
+		case 'bayar_popmodal':
+				$branch_id 		= isset($_GET['branch_id']);
+				$where_branchid = "WHERE branch_id = '$branch_id'";
+				$branch_name 	= select_config_by('branches', 'branch_name', $where_branchid);
+				include '../views/transaction/bayar_popmodal.php';
+			break;
+
+		case 'save':
+			$itemid = $_POST['itemid'];
+			$itemprice = $_POST['itemprice'];
+			$itemqty = $_POST['itemqty'];
+			$date_picker1 = $_POST['date_picker1'];
+			$i_member = $_POST['i_member'];
+			$i_branch_id = $_POST['i_branch_id'];
+
+			$tanggal = explode("/", $date_picker1);
+			$tanggal = $tanggal[2]."/".$tanggal[1]."/".$tanggal[0];
+			$transaction_id = get_last_date('transactions', 'transaction_id');
+			$transaction_code = "INV/".$tanggal."/".$transaction_id;
+			$tanggaltransaksi = date("Y-m-d H:m:s");
+			$data = "'',
+							 '$transaction_code',
+							 '$i_branch_id',
+							 '$i_member',
+							 '$tanggaltransaksi',
+							 '',
+							 '',
+							 '',
+							 '',
+							 '',
+							 '',
+							 '',
+							 '',
+							 '',
+							 '',
+							 '',
+							 ''";
+			// foreach ($itemid as $row) {
+			//
+			// }
+
+			break;
+
+
 }
 ?>

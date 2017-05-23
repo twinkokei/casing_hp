@@ -44,6 +44,7 @@ function get_stock($item_id, $branch_id){
 	$result = ($row['result']) ? $row['result'] : "0";
 	return $result;
 }
+
 function delete($id){
 	$query = mysql_query("delete from items where item_id = '$id'");
 }
