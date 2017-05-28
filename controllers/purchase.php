@@ -34,6 +34,8 @@ switch ($page) {
 		$query_supplier = select_supplier();
 		$query_item = select_item();
 		$query_branch = select_branch();
+		$query_merk = select_merk();
+		$query_bahan = select_bahan();
 
 		$id = (isset($_GET['id'])) ? $_GET['id'] : null;
 		if($id){
@@ -57,6 +59,11 @@ switch ($page) {
 			
 			$action = "purchase.php?page=save";
 		}
+			$row->item_name = false;
+			$row->item_merk = false;
+			$row->harga_beli = false;
+			$row->item_price = false;
+			$row->item_bahan = false;
 
 		include '../views/purchase/form.php';
 		get_footer();
@@ -72,7 +79,7 @@ switch ($page) {
 		$i_item_id = get_isset($i_item_id);
 		$i_harga = get_isset($i_harga);
 		$i_qty = get_isset($i_qty);
-		//$i_total = get_isset($i_total);
+		$i_total = get_isset($i_total);
 		$i_supplier = get_isset($i_supplier);
 		$i_branch_id = get_isset($i_branch_id);
 		
@@ -83,7 +90,7 @@ switch ($page) {
 					'$i_item_id', 
 					'$i_qty',
 					'$i_harga',
-					'0',
+					'$i_total',
 					'$i_supplier',
 					'$i_branch_id'
 			";
@@ -114,7 +121,7 @@ switch ($page) {
 		$i_item_id = get_isset($i_stock_id);
 		$i_harga = get_isset($i_harga);
 		$i_qty = get_isset($i_qty);
-		//$i_total = get_isset($i_total);
+		$i_total = get_isset($i_total);
 		$i_supplier = get_isset($i_supplier);
 		$i_branch_id = get_isset($i_branch_id);
 		
@@ -122,7 +129,7 @@ switch ($page) {
 					stock_id = '$i_stock_id', 
 					purchase_qty = '$i_qty',
 					purchase_price = '$i_harga',
-					purchase_total = '0',
+					purchase_total = '$i_total',
 					supplier_id = '$i_supplier',
 					branch_id = '$i_branch_id'
 
@@ -144,6 +151,29 @@ switch ($page) {
 
 		header('Location: purchase.php?page=list&did=3');
 
+	break;
+
+	case 'save_add_item':
+
+	extract($_POST);
+
+    	$i_name = get_isset($i_name);
+		$i_merk = get_isset($i_merk);
+		$i_beli = get_isset($i_beli);
+		$i_jual = get_isset($i_jual);
+		$i_bahan = get_isset($i_bahan);
+
+		$data_s = "'',
+					'$i_name',
+					'$i_merk',
+					'$i_beli',
+					'$i_jual',
+					'$i_bahan'
+			";
+    	create_config('items',$data_s);
+    	// var_dump($_POST);
+    	echo $data_s;
+    header('location: purchase.php?page=form&id=');
 	break;
 }
 

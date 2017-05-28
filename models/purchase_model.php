@@ -1,12 +1,11 @@
 <?php
 
 function select($where){
-	$query = mysql_query("select a.* , b.supplier_name,c.unit_name, d.item_name, e.branch_name
-							from purchases a
-							join suppliers b on b.supplier_id = a.supplier_id
-							join items d on d.item_id = a.item_id
-							join units c on c.unit_id = d.unit_id
-							join branches e on e.branch_id = a.branch_id
+	$query = mysql_query("SELECT a.* , b.supplier_name, d.item_name, e.branch_name
+							FROM purchases a
+							JOIN suppliers b ON b.supplier_id = a.supplier_id
+							JOIN items d ON d.item_id = a.item_id
+							JOIN branches e ON e.branch_id = a.branch_id
 							$where
 							order by purchase_id");
 	return $query;
@@ -18,15 +17,22 @@ function select_supplier(){
 }
 
 function select_item(){
-	$query = mysql_query("select a.*, b.unit_name 
-							from items a 
-							join units b on b.unit_id = a.unit_id
-							order by item_id");
+	$query = mysql_query("select * from items order by item_id");
 	return $query;
 }
 
 function select_branch(){
 	$query = mysql_query("select * from branches order by branch_id");
+	return $query;
+}
+
+function select_merk(){
+	$query = mysql_query("select * from merk order by merk_id");
+	return $query;
+}
+
+function select_bahan(){
+	$query = mysql_query("select * from jenis_bahan order by bahan_id");
 	return $query;
 }
 

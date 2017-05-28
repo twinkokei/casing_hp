@@ -39,7 +39,14 @@
 <!-- <script src="../assets/ea/code/js/highcharts-3d.js"></script>
 <script src="../assets/ea/code/js/modules/exporting.js"></script> -->
   <section class="content">
-    <div id="container" style="height: 400px; width: : 310px"></div>
+    <div class="row">
+      <div class="col-xs-12 hide-on-mobile320">
+        <div id="container" style="height: 400px;"></div>
+      </div>
+    </div>
+    </br>
+
+    <!-- Top Item -->
     <div class="row hide-on-mobile320">
           <div class="col-md-6">
               <form role="form" action="<?= $action?>" method="post">

@@ -267,7 +267,7 @@ $(document).ready(function(){
 
 			var new_item_detail = {
 							'item_name'		: this_name,
-							'item_id'			: this_id,
+							'item_id'		: this_id,
 							'item_price'	: this_harga_jual,
 							'item_qty'		: this_qty,
 							'item_status'	: this_status
@@ -496,9 +496,11 @@ $(document).ready(function(){
 
 	$("#btn-bayar").on('click', function(e) {
 			storage_item_detail = JSON.parse(localStorage.getItem('item_detail'));
+			var order_detail = JSON.parse(localStorage.getItem('order_detail'));
 			var itemid = [];
 			var itemprice = [];
 			var itemqty = [];
+			var order = [];
 			var total_all = $('#total_all').val();
 			var member_id = $('#i_member').val();
 			var branch_id = $('#i_branch_id').val();
@@ -517,7 +519,10 @@ $(document).ready(function(){
 				branch_id : branch_id,
 				date_picker1:date_picker1
 			}
-			getmodal('#medium_modal', 'transaction.php?page=bayar_popmodal&branch_id='+branch_id);
+			order.push(data);
+			localStorage.setItem('order_detail', JSON.stringify(order));
+			console.log(order);
+			getmodal('#medium_modal', 'transaction.php?page=bayar_popmodal&date_picker1='+date_picker1+'&member_id='+member_id+'&branch_id='+branch_id+'&total_all='+total_all);
 	    e.preventDefault(); // avoid to execute the actual submit of the form.
 	});
 	$.fn.getItems();
