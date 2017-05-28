@@ -55,43 +55,69 @@ switch ($page) {
 				include '../views/transaction/bayar_popmodal.php';
 			break;
 
-		case 'save':
-		
-			echo "string";
+		case 'simpan_transaksi':
 
-			// $itemid = $_POST['itemid'];
-			// $itemprice = $_POST['itemprice'];
-			// $itemqty = $_POST['itemqty'];
-			// $date_picker1 = $_GET['date_picker1'];
-			// $i_member = $_POST['i_member'];
-			// $i_branch_id = $_POST['i_branch_id'];
+			$itemid = $_POST['item_id'];
+			$itemprice = $_POST['item_price'];
+			$itemqty = $_POST['item_qty'];
+			$date_picker1 = $_POST['i_date'];
+			$i_member = $_POST['i_member'];
+			$i_branch_id = $_POST['i_branch_id'];
+			$tanggal = explode("/", $date_picker1);
+			$tanggal = $tanggal[2]." / ".$tanggal[1]." / ".$tanggal[0];
+			$transaction_id = get_last_id('transactions', 'transaction_id');
+			$transaction_code = "INV/".$tanggal."/".$transaction_id;
+			$tanggaltransaksi = date("Y-m-d H:m:s");
 
-			// $tanggal = explode("/", $date_picker1);
-			// $tanggal = $tanggal[2]."/".$tanggal[1]."/".$tanggal[0];
-			// $transaction_id = get_last_date('transactions', 'transaction_id');
-			// $transaction_code = "INV/".$tanggal."/".$transaction_id;
-			// $tanggaltransaksi = date("Y-m-d H:m:s");
+			$data = "'',
+							 '$transaction_code',
+							 '$i_branch_id',
+							 '$i_member',
+							 '$tanggaltransaksi',
+							 '',
+							 '',
+							 '',
+							 '',
+							 '',
+							 '',
+							 '',
+							 '',
+							 '',
+							 '',
+							 '',
+							 '0'";
 
-			// $data = "'',
-			// 				 '$transaction_code',
-			// 				 '$i_branch_id',
-			// 				 '$i_member',
-			// 				 '$tanggaltransaksi',
-			// 				 '',
-			// 				 '',
-			// 				 '',
-			// 				 '',
-			// 				 '',
-			// 				 '',
-			// 				 '',
-			// 				 '',
-			// 				 '',
-			// 				 '',
-			// 				 '',
-			// 				 ''";
-			// foreach ($itemid as $row) {
-			//
-			// }
+			$id = create_config('transactions', $data);
+			if ($id) {
+				foreach ($itemid as $row => $value) {
+					$whereitem_id = "WHERE item_id = '".$itemid[$row]."'";
+					$r_item = select_object_config('items', $whereitem_id);
+
+					$total = 0;
+					$total = $itemqty[$row]*$r_item->item_price;
+					$datadetail = "'',
+												 '$id',
+												 '".$itemid[$row]."',
+												 '$r_item->harga_beli',
+												 '',
+												 '$r_item->item_price',
+												 '',
+												 '$r_item->item_price',
+												 '".$itemqty[$row]."',
+												 '$total'";
+					create_config('transaction_details', $datadetail);
+				}
+			}
+			$data = array();
+			$data['id'] = $id;
+
+			if ($id) {
+				$data['status'] = '200';
+			} else {
+				$data['status'] = '204';
+			}
+
+			echo json_encode($data);
 
 			break;
 

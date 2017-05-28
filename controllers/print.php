@@ -72,6 +72,14 @@ switch ($page) {
                 exit();
                 include '../views/print/excelmenudownload.php';
         break;
+
+		case 'printstruk':
+			$transaction_id = $_GET['id'];
+			
+			// $dompdf->loadHtml('hello world');
+			include '../views/print/printstruk.php';
+			break;
+
 }
 
 ?>

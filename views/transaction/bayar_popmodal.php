@@ -16,10 +16,10 @@
 	            while($r_byr = mysql_fetch_array($query_payment_method)){?>
 	            <option value="<?= $r_byr['payment_method_id'] ?>"><?= $r_byr['payment_method_name']?></option>
 	            <?}?>
-	        </select>  
+	        </select>
 	  	</div>
 	  	<div id="form_debit_kredit" class="form-group">
-	  		
+
 	  	</div>
 	  	<div class="form-group">
 	  		<label>Bayar</label>
@@ -46,27 +46,56 @@ $(document).ready(function(){
 
 
 function btn_bayar(){
-	// $.ajax({
- //           type: "POST",
- //           url: url,
- //           data:{total_all:total_all} , // serializes the form's elements.
- //           dataType: 'json',
- //           success: function(data)
- //           {
- //               login_response(data); // show response from the php script.
- //           }
- //         });
+	var storage_item_detail = JSON.parse(localStorage.getItem('item_detail'));
+	var item_id 	= [];
+	var item_qty 	= [];
+	var item_price = [];
+	var paramArr = $("#formpembayaran").serializeArray();
+	var url = "transaction.php?page=simpan_transaksi";
+
+	$.each(storage_item_detail, function(index, value){
+		item_id.push(value.item_id);
+		item_qty.push(value.item_qty);
+		item_price.push(value.item_price);
+	});
+	var i_date = $('#date_picker1').val();
+	var i_member = $('#i_member').val();
+	var i_branch_id = $('#i_branch_id').val();
+
+	paramArr.push( {name:'item_id[]', value:item_id },
+                 {name:'item_qty[]', value:item_qty },
+                 {name:'item_price[]', value:item_price },
+								 {name:'i_date', value:i_date },
+								 {name:'i_member', value:i_member },
+								 {name:'i_branch_id', value:i_branch_id });
+	 $.ajax({
+            type: "POST",
+            url: url,
+            data: paramArr, // serializes the form's elements.
+						dataType: "JSON",
+            success: function(data)
+            {
+							if (data.status == '200') {
+								var url = "print.php?page=printstruk&id="+data.id;
+								window.open(url);
+								setTimeout(function(){ location.reload();}, 1000);
+
+							} else {
+								alert("Error !!");
+							}
+            }
+          });
 }
 
 	function hitung_kembalian(){
 		var harga = $('#total').val();
         var bayar = $('#jml_bayar').val();
-        
-          
-        
+
+
+
         var kembalian = bayar - harga;
-        
-        
+
+
         document.getElementById("jml_kembalian_").value = toRp(kembalian);
         document.getElementById("jml_kembalian").value = kembalian;
 	}

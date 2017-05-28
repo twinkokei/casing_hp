@@ -211,9 +211,6 @@ $(document).ready(function(){
 
 	set_harga();
 
-	// var item_detail = [];
-	// var search_data = [];
-
 	$.fn.getItems = function(){
 		$.get("transaction.php?page=get_items",function(data){
 						var no = 1;

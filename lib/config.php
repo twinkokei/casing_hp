@@ -4,7 +4,7 @@ session_start();
 $con = mysql_connect("localhost","root","");
 //mysql_select_db("warung_app", $con);
 //$con = mysql_connect("localhost","ab3127_r35t0","x}.;1O9X.=xw");
-mysql_select_db("casinghp", $con);
+mysql_select_db("casinghp2", $con);
 unset($_SESSION['menu_active']);
 
 $http = 'http' . ((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') ? 's' : '') . '://';
