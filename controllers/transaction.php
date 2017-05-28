@@ -69,21 +69,25 @@ switch ($page) {
 			$transaction_code = "INV/".$tanggal."/".$transaction_id;
 			$tanggaltransaksi = date("Y-m-d H:m:s");
 
+			$total = $_POST['total'];
+			$jml_bayar = $_POST['jml_bayar'];
+			$jml_kembalian = $_POST['jml_kembalian'];
+
 			$data = "'',
 							 '$transaction_code',
 							 '$i_branch_id',
 							 '$i_member',
 							 '$tanggaltransaksi',
+							 '$total',
 							 '',
 							 '',
+							 '$total',
+							 '$jml_bayar',
+							 '$jml_kembalian',
 							 '',
+							 '1',
 							 '',
-							 '',
-							 '',
-							 '',
-							 '',
-							 '',
-							 '',
+							 '".$_SESSION['user_id']."',
 							 '',
 							 '0'";
 

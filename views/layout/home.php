@@ -48,7 +48,7 @@
 
     <!-- Top Item -->
     <div class="row hide-on-mobile320">
-          <div class="col-md-6">
+          <div class="col-md-12">
               <form role="form" action="<?= $action?>" method="post">
                 <div class="box">
                   <div class="box-body2 table-responsive">
@@ -56,7 +56,7 @@
                         <h3 class="box-title">Top Item</h3>
                     </div>
                     <div class="box-body">
-                        	<div class="col-md-6">
+                        	<div class="col-md-12">
                               <div class="form-group">
                                 <div class="form-group">
                                   <div class="input-group">
@@ -106,7 +106,7 @@
             </form>
           </div>
   <!-- stok limit -->
-          <div class="col-md-6">
+          <div class="col-md-6" style="display: none;">
              <div class="box">
                 <div class="box-header">
                       <h3 class="box-title">Crisis Raw Inventory Stock</h3>
