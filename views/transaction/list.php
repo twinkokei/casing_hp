@@ -1,7 +1,4 @@
 <link href="../css/transaction.css" rel="stylesheet" type="text/css"/>
-<!-- select2 -->
-<script type="text/javascript" src="../select2/dist/js/select2.js"></script>
-<!-- end select2 -->
 <script type="text/javascript" src="../js/search2/jcfilter.min.js"></script>
 	<?php
 	if(isset($_GET['did']) && $_GET['did'] == 1){

@@ -10,8 +10,8 @@
           <thead>
             <tr>
               <th width="5%">No</th>
-              <th>Nama Menu</th>
-              <th>Owner</th>
+              <th>Nama Type HP</th>
+              <th>Harga</th>
               <th>Qty</th>
               <th>Omset</th>
             </tr>
@@ -23,11 +23,11 @@
           $grand_total_omset = 0;
           while($row_item = mysql_fetch_array($query_item)){
           $jumlah = ($row_item['jumlah']) ? $row_item['jumlah'] : 0;
-          $total = $jumlah * $row_item['menu_price'];?>
+          $total = $jumlah * $row_item['item_price'];?>
             <tr>
               <td><?= $no_item ?></td>
-              <td><?= $row_item['menu_name']; ?></td>
-              <td><?= $row_item['partner_name']; ?></td>
+              <td><?= $row_item['item_name']; ?></td>
+              <td><?= $row_item['item_price']; ?></td>
               <td><?= tool_format_number($jumlah)?></td>
               <td><?= tool_format_number($row_item['jumlah_omset'])?></td>
             </tr>

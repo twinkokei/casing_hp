@@ -31,16 +31,15 @@
                                             <input required type="text" name="i_name" class="form-control" placeholder="Masukkan nama barang..." value="<?= $row->item_name ?>"/>
                                         </div>
                                         <div class="form-group">
-                                            <label>Satuan</label>
-                                            <select id="basic" name="i_unit_id" size="1" class="selectpicker show-tick form-control" data-live-search="true" />
-                                           <?php
-                                           while($r_unit = mysql_fetch_array($query_unit)){
-										   ?>
-                                             <option value="<?= $r_unit['unit_id'] ?>" <?php if($row->unit_id == $r_unit['unit_id']){ ?> selected="selected"<?php } ?>><?= $r_unit['unit_name']?></option>
-                                             <?php
-										   }
-											 ?>
-                                           </select>                                            
+                                          <label>Merk</label>
+                                            <select id="i_merk_id" name="i_merk_id" size="1" class="selectpicker show-tick form-control"
+                                            data-live-search="true">
+                                            <option value="0"></option>
+                                            <?php
+                                                  while($r_merk = mysql_fetch_array($query_merk)){ ?>
+                                                 <option <?php if($row->item_merk == $r_merk['merk_id']){ ?> selected="selected"<?php } ?> value="<?= $r_merk['merk_id'] ?>"><?= $r_merk['merk_name']?></option>
+                                                 <?php } ?>
+                                            </select>
                                         </div>
                                       <div class="form-group">
                                             <label>Limit</label>

@@ -73,25 +73,26 @@ switch ($page) {
 			$jml_bayar = $_POST['jml_bayar'];
 			$jml_kembalian = $_POST['jml_kembalian'];
 
-			$data = "'',
-							 '$transaction_code',
-							 '$i_branch_id',
-							 '$i_member',
-							 '$tanggaltransaksi',
-							 '$total',
-							 '',
-							 '',
-							 '$total',
-							 '$jml_bayar',
-							 '$jml_kembalian',
-							 '',
-							 '1',
-							 '',
-							 '".$_SESSION['user_id']."',
-							 '',
-							 '0'";
+			$data_ = "'',
+					 '$transaction_code',
+					 '$i_branch_id',
+					 '$i_member',
+					 '$tanggaltransaksi',
+					 '$total',
+					 '',
+					 '',
+					 '$total',
+					 '$jml_bayar',
+					 '$jml_kembalian',
+					 '',
+					 '1',
+					 '',
+					 '".$_SESSION['user_id']."',
+					 '',
+					 '0'";
 
-			$id = create_config('transactions', $data);
+			$id = create_config('transactions', $data_);
+
 			if ($id) {
 				foreach ($itemid as $row => $value) {
 					$whereitem_id = "WHERE item_id = '".$itemid[$row]."'";
@@ -100,15 +101,15 @@ switch ($page) {
 					$total = 0;
 					$total = $itemqty[$row]*$r_item->item_price;
 					$datadetail = "'',
-												 '$id',
-												 '".$itemid[$row]."',
-												 '$r_item->harga_beli',
-												 '',
-												 '$r_item->item_price',
-												 '',
-												 '$r_item->item_price',
-												 '".$itemqty[$row]."',
-												 '$total'";
+								 '$id',
+								 '".$itemid[$row]."',
+								 '$r_item->harga_beli',
+								 '',
+								 '$r_item->item_price',
+								 '',
+								 '$r_item->item_price',
+								 '".$itemqty[$row]."',
+								 '$total'";
 					create_config('transaction_details', $datadetail);
 				}
 			}

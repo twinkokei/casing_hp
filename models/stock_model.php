@@ -1,16 +1,16 @@
 <?php
 
 function select(){
-	$query = mysql_query("select a.*,  c.unit_name
-							from items a
-							join units c on c.unit_id = a.unit_id
+	$query = mysql_query("SELECT a.*,  c.merk_name
+							FROM items a
+							JOIN merk c ON c.merk_id = a.item_merk
 							order by item_id");
 	return $query;
 }
 
 
-function select_unit(){
-	$query = mysql_query("select * from units order by unit_id");
+function select_merk(){
+	$query = mysql_query("select * from merk order by merk_id");
 	return $query;
 }
 
@@ -20,10 +20,11 @@ function select_branch($where){
 }
 
 function read_id($id){
-	$query = mysql_query("select a.*,c.unit_name
-			from items a
-			join units c on c.unit_id = a.unit_id
-			where item_id = '$id'");
+	$query = mysql_query("SELECT a.*,c.merk_name
+						  FROM items a
+						  JOIN merk c ON c.merk_id = a.item_merk
+						  WHERE item_id = '$id'
+						");
 	$result = mysql_fetch_object($query);
 	return $result;
 }

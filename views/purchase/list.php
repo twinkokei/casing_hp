@@ -76,8 +76,8 @@
                                                <td><?= format_date($row['purchase_date']); ?></td>
                                                 <td><?= $row['item_name']?></td>
                                                 <td><?= $row['purchase_qty']?></td>
-                                                <td><?= $row['purchase_price']?></td>
-                                                <td><?= $row['purchase_total']?></td>
+                                                <td><?= format_rupiah($row['purchase_price']) ?></td>
+                                                <td><?= format_rupiah($row['purchase_total']) ?></td>
                                                 <td><?= $row['supplier_name']?></td>
                                                 <td><?= $row['branch_name']?></td>
                                               <td style="text-align:center;">

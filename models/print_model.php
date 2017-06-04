@@ -1,63 +1,69 @@
 <?php
 
 function select($transaction){
-	$query = mysql_query("select a.*, b.table_name, c.*, d.user_name
-							  from transactions a
-							  left join members c on c.member_id = a.member_id
-							  left join tables b on b.table_id = a.table_id
-							  left join users d on d.user_id = a.user_id
-							  where transaction_id = '".$transaction."'");
+	$query = mysql_query("SELECT a.*,c.*, d.user_name
+							  FROM transactions a
+							  LEFT JOIN members c ON c.member_id = a.member_id
+							  LEFT JOIN users d ON d.user_id = a.user_id
+							  WHERE transaction_id = '".$transaction."'");
 	return $query;
 }
 function select_item($transaction){
-	$query = mysql_query("select b.*, c.menu_name
-							  from transactions a
-							  join transaction_details b on b.transaction_id = a.transaction_id
-							  join menus c on c.menu_id = b.menu_id
-							  where a.transaction_id = '".$transaction."' AND c.menu_price !=0");
+	$query = mysql_query("SELECT b.*, c.item_name
+							  FROM transactions a
+							  JOIN transaction_details b ON b.transaction_id = a.transaction_id
+							  JOIN items c ON c.item_id = b.item_id
+							  WHERE a.transaction_id = '".$transaction."' AND c.item_price !=0");
 	return $query;
 }
 function selectbydate($start, $end){
-	$query = mysql_query("SELECT
-								a.*, b.table_name,
-								c.member_name, c.member_discount, d.building_name, e.user_login, e.user_name, f.payment_method_name, g.*
-							FROM
-								transactions a
+	$query = mysql_query("SELECT a.*,c.member_name, c.member_discount, e.user_login, e.user_name, f.payment_method_name, g.*
+							FROM transactions a
 							LEFT JOIN members c ON c.member_id = a.member_id
-							JOIN TABLES b ON b.table_id = a.table_id
-							LEFT JOIN buildings d on d.building_id = b.building_id
-							left join users e on e.user_id = a.user_id
-							LEFT JOIN payment_methods f on f.payment_method_id = a.payment_method_id
-							left join banks g on g.bank_id = a.bank_id
+							LEFT JOIN users e ON e.user_id = a.user_id
+							LEFT JOIN payment_methods f ON f.payment_method_id = a.payment_method_id
+							LEFT JOIN banks g ON g.bank_id = a.bank_id
 							WHERE
 								transaction_date BETWEEN '$start'
 							AND '$end'");
 	return $query;
 }
 function selectmenubydate($start, $end){
-	$query = mysql_query("SELECT date(a.transaction_date) AS date, b.menu_id, sum(b.transaction_detail_qty) AS qty,
-												b.transaction_detail_original_price, c.menu_name FROM transactions a
+	$query = mysql_query("SELECT DATE(a.transaction_date) AS DATE, b.item_id, SUM(b.transaction_detail_qty) AS qty,
+												b.transaction_detail_original_price, c.item_name FROM transactions a
 												LEFT JOIN transaction_details b ON b.transaction_id = a.transaction_id
-												LEFT JOIN menus c ON c.menu_id = b.menu_id
+												LEFT JOIN items c ON c.item_id = b.item_id
 												WHERE transaction_date BETWEEN '$start'
-												AND '$end' GROUP BY date,
-												menu_id ORDER BY date");
+												AND '$end' GROUP BY DATE,
+												item_id ORDER BY DATE");
 	return $query;
 }
 function graph($start, $end){
-        $query = mysql_query("SELECT
-								a.*, b.table_name,
-								c.member_name, c.member_discount, d.building_name, e.user_login, e.user_name
-							FROM
-								transactions a
+        $query = mysql_query("SELECT a.*,c.member_name, c.member_discount,e.user_login, e.user_name
+							FROM transactions a
 							LEFT JOIN members c ON c.member_id = a.member_id
-							JOIN TABLES b ON b.table_id = a.table_id
-							LEFT JOIN buildings d on d.building_id = b.building_id
 							left join users e on e.user_id = a.user_id
-							WHERE
-								transaction_date BETWEEN '$start'
+							WHERE transaction_date BETWEEN '$start'
 							AND '$end'");
         return $query;
+}
+function select_transaction($id){
+	$query = mysql_query("SELECT a.*, b.*,c.branch_name FROM transactions a
+
+							 LEFT JOIN members b ON b.member_id = a.member_id
+							 LEFT JOIN branches c ON c.branch_id = a.branch_id
+							 ORDER BY transaction_id");
+	return $query;
+}
+function select_supplier($id){
+	$query = mysql_query("SELECT * FROM suppliers ORDER BY supplier_id");
+	return $query;
+}
+function select_trasactiondet($id){
+	$query = mysql_query("SELECT a.*, b.item_name, b.item_price FROM transaction_details a
+							 LEFT JOIN items b ON b.item_id = a.item_id
+							 ORDER BY transaction_detail_id");
+	return $query;
 }
 
 ?>

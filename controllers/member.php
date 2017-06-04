@@ -167,7 +167,7 @@ switch ($page) {
 			}
 
 
-			header("Location: member.php?page=form&id=$id&did=1");
+			header("Location: member.php?page=list&id=$id&did=1");
 
 
 

@@ -40,7 +40,7 @@ switch ($page) {
 
 		$close_button = "stock.php?page=list";
 		
-		$query_unit = select_unit();
+		$query_merk = select_merk();
 		
 
 		$id = (isset($_GET['id'])) ? $_GET['id'] : null;
@@ -55,7 +55,7 @@ switch ($page) {
 			$row = new stdClass();
 	
 			$row->item_name = false;
-			$row->unit_id = false;
+			$row->item_merk = false;
 			$row->item_limit = false;
 			
 			
@@ -71,21 +71,21 @@ switch ($page) {
 		extract($_POST);
 
 		$i_name = get_isset($i_name);
-		$i_unit_id = get_isset($i_unit_id);
+		$i_merk_id = get_isset($i_merk_id);
 		$i_item_limit = get_isset($i_item_limit);
 		
 		
 		$data = "'',
 					'$i_name',
-					'$i_unit_id',
+					'$i_merk_id',
 					'$i_item_limit'
 			";
 			
-			//echo $data;
+			echo $data;
 
-			create($data);
+			// create($data);
 		
-			header("Location: stock.php?page=list&did=1");
+			// header("Location: stock.php?page=list&did=1");
 		
 		
 	break;
@@ -97,19 +97,19 @@ switch ($page) {
 		$id = get_isset($_GET['id']);
 		
 		$i_name = get_isset($i_name);
-		$i_unit_id = get_isset($i_unit_id);
+		$i_merk_id = get_isset($i_merk_id);
 		$i_item_limit = get_isset($i_item_limit);
 	
 		
 					$data = "
 					item_name = '$i_name',
-					unit_id = '$i_unit_id',
+					item_merk = '$i_merk_id',
 					item_limit = '$i_item_limit'
 
 					";
 			
 			update($data, $id);
-			
+			// echo($data);			
 			header('Location: stock.php?page=list&did=2');
 
 		

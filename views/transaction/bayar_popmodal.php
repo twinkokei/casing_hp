@@ -65,24 +65,24 @@ function btn_bayar(){
 	paramArr.push( {name:'item_id[]', value:item_id },
                  {name:'item_qty[]', value:item_qty },
                  {name:'item_price[]', value:item_price },
-								 {name:'i_date', value:i_date },
-								 {name:'i_member', value:i_member },
-								 {name:'i_branch_id', value:i_branch_id });
+				 {name:'i_date', value:i_date },
+				 {name:'i_member', value:i_member },
+				 {name:'i_branch_id', value:i_branch_id });
 	 $.ajax({
             type: "POST",
             url: url,
             data: paramArr, // serializes the form's elements.
-						dataType: "JSON",
+			dataType: "JSON",
             success: function(data)
             {
-							if (data.status == '200') {
-								var url = "print.php?page=printstruk&id="+data.id;
-								window.open(url);
-								setTimeout(function(){ location.reload();}, 1000);
+				if (data.status == '200') {
+					var url = "print.php?page=printstruk&id="+data.id;
+					window.open(url);
+					setTimeout(function(){ location.reload();}, 1000);
 
-							} else {
-								alert("Error !!");
-							}
+				} else {
+					alert("Error !!");
+				}
             }
           });
 }

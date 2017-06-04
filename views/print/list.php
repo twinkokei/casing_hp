@@ -75,7 +75,6 @@ Foodcourt Delta lt. 4
 		<td align="right" >cashier: <?= $row['user_name'] ?></td>
 	</tr>
 	<tr>
-		<td>Meja: <?= $row['table_name']?></td>
 		<td align="right" ><?= $row['transaction_date'] ?></td>
 		<input type="hidden" id="transaction_code" name="transaction_code" value="<?= $row['transaction_code']?>">
 		<input type="hidden" id="branch_id" name="branch_id" value="<?= $row['branch_id']?>">

@@ -57,7 +57,7 @@
                                             	<th width="5%">No</th>
 
                                                 <th>Nama</th>
-                                                <th>Satuan</th>
+                                                <th>Merk</th>
                                                 <th>Limit</th>
                                                 <?php
                                                	while($r_branch = mysql_fetch_array($q_branch)){ ?>
@@ -73,7 +73,7 @@
                                             <tr>
                                                 <td><?= $no?></td>
                                                 <td><?= $row['item_name']?></td>
-                                                <td><?= $row['unit_name']?></td>
+                                                <td><?= $row['merk_name']?></td>
                                                 <td><?= $row['item_limit']?></td>
                                                 <?php
                                                 $count_branch = 0;

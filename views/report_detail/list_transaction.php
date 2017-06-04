@@ -10,7 +10,7 @@
             <tr>
               <th width="5%">No</th>
               <th>Tanggal</th>
-              <th>Meja</th>
+              <!-- <th>Meja</th> -->
               <th>Total</th>
               <th>Bayar</th>
               <th>Kembali</th>
@@ -24,9 +24,9 @@
             <tr>
               <td><?= $no_tr?></td>
               <td><?= $row_tr['transaction_date']?></td>
-              <td><?php
+              <!-- <td><?php
               $building = ($row_tr['table_id']!=0) ? " (".$row_tr['building_name'].")" : "";
-              echo $row_tr['table_name'].$building; ?></td>
+              echo $row_tr['table_name'].$building; ?></td> -->
               <td><?= tool_format_number($row_tr['transaction_total'])?></td>
               <td><?= tool_format_number($row_tr['transaction_payment'])?></td>
               <td><?= tool_format_number($row_tr['transaction_change'])?></td>

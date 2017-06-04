@@ -61,11 +61,9 @@
                                                         data-live-search="true">
                                                         <option value="0"></option>
                                                         <?php
-                                                        while($r_item = mysql_fetch_array($query_item)){
-                                                         ?>
-                                                         <option value="<?= $r_item['item_id']?>"><?= $r_item['item_name']?>
-                                                         </option>
-                                                         <?}?>
+                                                          while($r_item = mysql_fetch_array($query_item)){ ?>
+                                                         <option <?php if($row->item_id == $r_item['item_id']){ ?> selected="selected"<?php } ?> value="<?= $r_item['item_id'] ?>"><?= $r_item['item_name']?></option>
+                                                         <?php } ?>
                                                 </select> 
                                                 </div>
                                                 <div class="col-md-3">
