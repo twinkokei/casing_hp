@@ -515,7 +515,7 @@ $(document).ready(function(){
 			}
 			order.push(data);
 			localStorage.setItem('order_detail', JSON.stringify(order));
-			console.log(order);
+			
 			getmodal('#medium_modal', 'transaction.php?page=bayar_popmodal&date_picker1='+date_picker1+'&member_id='+member_id+'&branch_id='+branch_id+'&total_all='+total_all);
 	    e.preventDefault(); // avoid to execute the actual submit of the form.
 	});

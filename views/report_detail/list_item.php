@@ -4,7 +4,7 @@
     <div class="box">
       <div class="box-body2 table-responsive">
         <div class="box-header" style="cursor: move;">
-          <h3 class="box-title"><strong>Detail Per Menu</strong></h3>
+          <h3 class="box-title"><strong>Detail Per Item</strong></h3>
         </div>
         <table id="list_item_tb" class="table table-bordered table-striped">
           <thead>

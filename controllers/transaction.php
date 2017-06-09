@@ -89,6 +89,7 @@ switch ($page) {
 					 '',
 					 '".$_SESSION['user_id']."',
 					 '',
+					 '0',
 					 '0'";
 
 			$id = create_config('transactions', $data_);

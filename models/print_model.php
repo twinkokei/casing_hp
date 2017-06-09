@@ -49,7 +49,6 @@ function graph($start, $end){
 }
 function select_transaction($id){
 	$query = mysql_query("SELECT a.*, b.*,c.branch_name FROM transactions a
-
 							 LEFT JOIN members b ON b.member_id = a.member_id
 							 LEFT JOIN branches c ON c.branch_id = a.branch_id
 							 ORDER BY transaction_id");
@@ -63,6 +62,17 @@ function select_trasactiondet($id){
 	$query = mysql_query("SELECT a.*, b.item_name, b.item_price FROM transaction_details a
 							 LEFT JOIN items b ON b.item_id = a.item_id
 							 ORDER BY transaction_detail_id");
+	return $query;
+}
+
+function select_transactionall($id){
+	$query = mysql_query("SELECT a.*, b.*, d.member_name, e.branch_name FROM transactions a
+												LEFT JOIN transaction_details b ON b.transaction_id = a.transaction_id
+												LEFT JOIN items c ON c.item_id = b.item_id
+												LEFT JOIN members d ON d.`member_id` = a.`member_id`
+												LEFT JOIN branches e ON e.`branch_id`= a.`branch_id`
+												WHERE a.transaction_id = '$id'
+											 	ORDER BY a.transaction_id");
 	return $query;
 }
 

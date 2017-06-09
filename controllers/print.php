@@ -74,19 +74,12 @@ switch ($page) {
         break;
 
 		case 'printstruk':
-		echo "string";
+		// echo "string";
 			$transaction_id = $_GET['id'];
 			$query = select($transaction_id);
 			$row = mysql_fetch_array($query);
-  			$date 	= isset($_GET["date"]);
 			$q_transaction = select_transactionall($transaction_id);
 			$r_transaction = mysql_fetch_array($q_transaction);
-
-			$q_supplier = select_supplier($supplier_id);
-			$r_supplier = mysql_fetch_array($q_supplier);
-
-			$q_transaction_detail = select_supplier($transaction_detail_id);
-			$r_transaction_detail = mysql_fetch_array($q_transaction_detail);
 
 			// $dompdf->loadHtml('hello world');
 			// include '../views/print/printstruk.php';

@@ -50,6 +50,42 @@ CREATE TABLE `branches` (
 
 insert  into `branches`(`branch_id`,`branch_name`,`branch_img`,`branch_desc`,`branch_address`,`branch_phone`,`branch_city`) values (3,'Cabang 1','1495769961_240448_9d198d8e-550b-11e4-9a0b-8a802523fab8.jpg','','alamat','0315926983','Surabaya'),(4,'Cabang 2','1495769972_240448_9d198d8e-550b-11e4-9a0b-8a802523fab8.jpg','Cabang Baru Balkpapan','Alamat','08123120398','Surabaya');
 
+/*Table structure for table `hapusbeli` */
+
+DROP TABLE IF EXISTS `hapusbeli`;
+
+CREATE TABLE `hapusbeli` (
+  `hapusjualbeli` int(11) NOT NULL AUTO_INCREMENT,
+  `hapusjualbelitype` int(11) DEFAULT NULL,
+  `id` int(11) DEFAULT NULL,
+  `hapusjualbeli_date` datetime DEFAULT NULL,
+  `user_id` int(11) NOT NULL,
+  `branch_id` int(11) NOT NULL,
+  PRIMARY KEY (`hapusjualbeli`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+
+/*Data for the table `hapusbeli` */
+
+insert  into `hapusbeli`(`hapusjualbeli`,`hapusjualbelitype`,`id`,`hapusjualbeli_date`,`user_id`,`branch_id`) values (1,2,3,'2017-06-08 22:06:18',11,3),(2,2,2,'2017-06-08 22:06:31',11,3);
+
+/*Table structure for table `hapusjual` */
+
+DROP TABLE IF EXISTS `hapusjual`;
+
+CREATE TABLE `hapusjual` (
+  `hapusjualbeli` int(11) NOT NULL AUTO_INCREMENT,
+  `hapusjualbelitype` int(11) DEFAULT NULL,
+  `id` int(11) DEFAULT NULL,
+  `hapusjualbeli_date` datetime DEFAULT NULL,
+  `user_id` int(11) NOT NULL,
+  `branch_id` int(11) NOT NULL,
+  PRIMARY KEY (`hapusjualbeli`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+
+/*Data for the table `hapusjual` */
+
+insert  into `hapusjual`(`hapusjualbeli`,`hapusjualbelitype`,`id`,`hapusjualbeli_date`,`user_id`,`branch_id`) values (1,1,4,'2017-06-08 23:06:15',11,3);
+
 /*Table structure for table `historystockday` */
 
 DROP TABLE IF EXISTS `historystockday`;
@@ -92,11 +128,11 @@ CREATE TABLE `item_stocks` (
   `item_stock_qty` int(11) NOT NULL,
   `branch_id` int(11) NOT NULL,
   PRIMARY KEY (`item_stock_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=latin1;
 
 /*Data for the table `item_stocks` */
 
-insert  into `item_stocks`(`item_stock_id`,`item_id`,`item_stock_qty`,`branch_id`) values (21,28,15,3),(22,29,10,3),(23,0,0,3),(24,7,6,3),(25,2,21,3),(26,1,60,3);
+insert  into `item_stocks`(`item_stock_id`,`item_id`,`item_stock_qty`,`branch_id`) values (21,28,6,3),(22,29,10,3),(23,0,10,3),(24,7,10,3),(25,2,10,3),(26,1,-39,3),(27,2,10,3),(28,2,10,1);
 
 /*Table structure for table `items` */
 
@@ -156,20 +192,21 @@ CREATE TABLE `journals` (
   `data_id` int(11) NOT NULL,
   `data_url` text NOT NULL,
   `journal_debit` int(11) NOT NULL,
-  `journal_credit` int(11) NOT NULL,
-  `journal_piutang` int(11) NOT NULL,
-  `journal_hutang` int(11) NOT NULL,
-  `journal_date` date NOT NULL,
-  `journal_desc` text NOT NULL,
-  `bank_id` int(11) NOT NULL,
-  `user_id` int(11) NOT NULL,
-  `branch_id` int(11) NOT NULL,
+  `journal_credit` int(11) DEFAULT NULL,
+  `journal_piutang` int(11) DEFAULT NULL,
+  `journal_hutang` int(11) DEFAULT NULL,
+  `journal_date` date DEFAULT NULL,
+  `journal_desc` text,
+  `bank_id` int(11) DEFAULT NULL,
+  `user_id` int(11) DEFAULT NULL,
+  `branch_id` int(11) DEFAULT NULL,
+  `status` int(11) DEFAULT '0',
   PRIMARY KEY (`journal_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=33 DEFAULT CHARSET=latin1;
 
 /*Data for the table `journals` */
 
-insert  into `journals`(`journal_id`,`journal_type_id`,`data_id`,`data_url`,`journal_debit`,`journal_credit`,`journal_piutang`,`journal_hutang`,`journal_date`,`journal_desc`,`bank_id`,`user_id`,`branch_id`) values (0,1,8,'',350000,0,0,0,'2017-05-29','',0,11,3),(26,2,52,'purchase.php?page=form&id=',0,0,0,0,'2017-05-26','',0,11,3),(27,2,53,'purchase.php?page=form&id=',0,10000,0,0,'2017-05-26','hp 4',0,11,3),(28,2,1,'purchase.php?page=form&id=',0,500000,0,0,'2017-05-28','Oppo F3 Plus',0,11,3),(29,2,2,'purchase.php?page=form&id=',0,220000,0,0,'2017-05-28','HTC Desire 510',0,11,3),(30,1,0,'',100000,0,0,0,'2017-05-28','',0,11,3),(31,1,7,'',125000,0,0,0,'2017-05-28','',0,11,3),(32,2,3,'purchase.php?page=form&id=',0,100000,0,0,'2017-05-29','Oppo F3 Plus',0,11,3);
+insert  into `journals`(`journal_id`,`journal_type_id`,`data_id`,`data_url`,`journal_debit`,`journal_credit`,`journal_piutang`,`journal_hutang`,`journal_date`,`journal_desc`,`bank_id`,`user_id`,`branch_id`,`status`) values (0,1,8,'',350000,0,0,0,'2017-05-29','',0,11,3,NULL),(26,2,52,'purchase.php?page=form&id=',0,0,0,0,'2017-05-26','',0,11,3,NULL),(27,2,53,'purchase.php?page=form&id=',0,10000,0,0,'2017-05-26','hp 4',0,11,3,NULL),(28,2,1,'purchase.php?page=form&id=',0,500000,0,0,'2017-05-28','Oppo F3 Plus',0,11,3,NULL),(29,2,2,'purchase.php?page=form&id=',0,220000,0,0,'2017-05-28','HTC Desire 510',0,11,3,NULL),(30,1,0,'',100000,0,0,0,'2017-05-28','',0,11,3,NULL),(31,1,7,'',125000,0,0,0,'2017-05-28','',0,11,3,NULL),(32,2,3,'purchase.php?page=form&id=',0,100000,0,0,'2017-05-29','Oppo F3 Plus',0,11,3,NULL);
 
 /*Table structure for table `kategori_utama` */
 
@@ -301,18 +338,20 @@ DROP TABLE IF EXISTS `purchases`;
 CREATE TABLE `purchases` (
   `purchase_id` int(11) NOT NULL AUTO_INCREMENT,
   `purchase_date` date NOT NULL,
+  `user_id` int(11) DEFAULT NULL,
   `item_id` int(11) NOT NULL,
-  `purchase_qty` int(11) NOT NULL,
-  `purchase_price` int(11) NOT NULL,
-  `purchase_total` int(11) NOT NULL,
-  `supplier_id` int(11) NOT NULL,
-  `branch_id` int(11) NOT NULL,
+  `purchase_qty` int(11) DEFAULT NULL,
+  `purchase_price` int(11) DEFAULT NULL,
+  `purchase_total` int(11) DEFAULT NULL,
+  `supplier_id` int(11) DEFAULT NULL,
+  `branch_id` int(11) DEFAULT NULL,
+  `status` int(11) DEFAULT '0',
   PRIMARY KEY (`purchase_id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
 
 /*Data for the table `purchases` */
 
-insert  into `purchases`(`purchase_id`,`purchase_date`,`item_id`,`purchase_qty`,`purchase_price`,`purchase_total`,`supplier_id`,`branch_id`) values (1,'2017-05-28',2,22,500000,11000000,6,3),(2,'2017-05-28',28,4,220000,880000,6,3),(3,'2017-05-29',1,50,100000,5000000,6,3);
+insert  into `purchases`(`purchase_id`,`purchase_date`,`user_id`,`item_id`,`purchase_qty`,`purchase_price`,`purchase_total`,`supplier_id`,`branch_id`,`status`) values (1,'2017-05-28',NULL,2,22,500000,11000000,6,3,0),(2,'2017-05-28',NULL,28,4,220000,880000,6,3,1),(3,'2017-05-29',NULL,1,50,100000,5000000,6,3,1);
 
 /*Table structure for table `side_menus` */
 
@@ -366,36 +405,11 @@ CREATE TABLE `transaction_details` (
   `transaction_detail_qty` int(11) DEFAULT NULL,
   `transaction_detail_total` int(11) DEFAULT NULL,
   PRIMARY KEY (`transaction_detail_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 
 /*Data for the table `transaction_details` */
 
-/*Table structure for table `transaction_histories` */
-
-DROP TABLE IF EXISTS `transaction_histories`;
-
-CREATE TABLE `transaction_histories` (
-  `transaction_id` int(11) NOT NULL,
-  `table_id` int(11) NOT NULL,
-  `branch_id` int(11) NOT NULL,
-  `member_id` int(11) NOT NULL,
-  `transaction_date` datetime NOT NULL,
-  `transaction_total` int(11) NOT NULL,
-  `transaction_discount` int(11) NOT NULL,
-  `transaction_grand_total` int(11) NOT NULL,
-  `transaction_payment` int(11) NOT NULL,
-  `transaction_change` int(11) NOT NULL,
-  `payment_method_id` int(11) NOT NULL,
-  `bank_id` int(11) NOT NULL,
-  `user_id` int(11) NOT NULL,
-  `bank_account_number` varchar(100) NOT NULL,
-  `transaction_code` int(11) NOT NULL,
-  `user_delete` int(11) NOT NULL,
-  `status` int(11) NOT NULL,
-  PRIMARY KEY (`transaction_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
-/*Data for the table `transaction_histories` */
+insert  into `transaction_details`(`transaction_detail_id`,`transaction_id`,`item_id`,`transaction_detail_original_price`,`transaction_detail_margin_price`,`transaction_detail_price`,`transaction_detail_price_discount`,`transaction_detail_grand_price`,`transaction_detail_qty`,`transaction_detail_total`) values (1,3,1,6500,0,125000,0,125000,1,125000),(2,4,1,6500,0,125000,0,125000,1,125000);
 
 /*Table structure for table `transaction_new_tmp` */
 
@@ -461,7 +475,7 @@ CREATE TABLE `transactions` (
   `transaction_code` varchar(11) NOT NULL,
   `branch_id` int(11) NOT NULL,
   `member_id` int(11) NOT NULL,
-  `transaction_date` datetime DEFAULT NULL,
+  `transaction_date` datetime NOT NULL,
   `transaction_total` int(11) DEFAULT NULL,
   `transaction_discount` int(11) DEFAULT NULL,
   `disc_member` int(11) DEFAULT NULL,
@@ -474,12 +488,13 @@ CREATE TABLE `transactions` (
   `user_id` int(11) DEFAULT NULL,
   `bank_account_number` varchar(100) DEFAULT NULL,
   `flag_code` int(1) DEFAULT NULL,
+  `status` int(11) DEFAULT '0',
   PRIMARY KEY (`transaction_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
 
 /*Data for the table `transactions` */
 
-insert  into `transactions`(`transaction_id`,`transaction_code`,`branch_id`,`member_id`,`transaction_date`,`transaction_total`,`transaction_discount`,`disc_member`,`transaction_grand_total`,`transaction_payment`,`transaction_change`,`transaction_disc_nominal`,`payment_method_id`,`bank_id`,`user_id`,`bank_account_number`,`flag_code`) values (1,'INV/2017 / ',3,0,'2017-05-30 11:05:38',125000,0,0,125000,130000,5000,0,1,0,11,'',0),(2,'INV/2017 / ',3,0,'2017-05-30 11:05:47',125000,0,0,125000,125000,0,0,1,0,11,'',0),(3,'INV/2017 / ',3,0,'2017-05-30 11:05:21',125000,0,0,125000,125000,0,0,1,0,11,'',0),(4,'INV/2017 / ',3,250,'2017-05-30 11:05:12',125000,0,0,125000,130000,5000,0,1,0,11,'',0),(5,'INV/2017 / ',3,0,'2017-05-30 11:05:22',125000,0,0,125000,130000,5000,0,1,0,11,'',0),(6,'INV/2017 / ',3,0,'2017-05-30 11:05:19',125000,0,0,125000,130000,5000,0,1,0,11,'',0),(7,'INV/2017 / ',3,250,'2017-05-30 11:05:10',125000,0,0,125000,130000,5000,0,1,0,11,'',0);
+insert  into `transactions`(`transaction_id`,`transaction_code`,`branch_id`,`member_id`,`transaction_date`,`transaction_total`,`transaction_discount`,`disc_member`,`transaction_grand_total`,`transaction_payment`,`transaction_change`,`transaction_disc_nominal`,`payment_method_id`,`bank_id`,`user_id`,`bank_account_number`,`flag_code`,`status`) values (1,'INV/2017 / ',3,0,'2017-05-28 14:05:20',0,0,0,0,0,0,0,0,0,0,'',0,0),(2,'INV/2017 / ',3,0,'2017-05-28 14:05:33',0,0,0,0,0,0,0,0,0,0,'',0,0),(3,'INV/2017 / ',3,250,'2017-06-08 17:06:35',225000,0,0,225000,300000,75000,0,1,0,11,'',0,0),(4,'INV/2017 / ',3,0,'2017-06-08 17:06:31',125000,0,0,125000,500000,375000,0,1,0,11,'',0,1);
 
 /*Table structure for table `transactions_tmp` */
 
@@ -583,13 +598,112 @@ CREATE TABLE `widget_tmp_details` (
 
 /*Data for the table `widget_tmp_details` */
 
+/* Trigger structure for table `hapusbeli` */
+
+DELIMITER $$
+
+/*!50003 DROP TRIGGER*//*!50032 IF EXISTS */ /*!50003 `updatestatus2` */$$
+
+/*!50003 CREATE */ /*!50017 DEFINER = 'root'@'localhost' */ /*!50003 TRIGGER `updatestatus2` AFTER INSERT ON `hapusbeli` FOR EACH ROW BEGIN
+	DECLARE jumlah_c INT;
+	DECLARE noisbn_c INT;
+	DECLARE done INT;
+	DECLARE done2 INT;	
+	
+	DECLARE itemid INT;
+	DECLARE itemqty INT;
+	
+	DECLARE itemid2 INT;
+	DECLARE itemqty2 INT;
+	
+	DECLARE cur1 CURSOR FOR SELECT a.item_id, a.purchase_qty FROM purchases a 
+	WHERE a.purchase_id = NEW.id;
+	DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = 1;
+	
+	
+	SET @type = new.hapusjualbelitype;
+	IF  @type = 2 
+	THEN
+		SET done = 0;
+		OPEN cur1;
+		igmLoop: LOOP   
+		FETCH cur1 INTO itemid, itemqty;
+		IF done = 1 THEN LEAVE igmLoop; END IF;
+			UPDATE item_stocks SET item_stock_qty = item_stock_qty - itemqty WHERE item_id = itemid AND branch_id = new.branch_id;
+		END LOOP igmLoop;
+		CLOSE cur1;
+	
+		UPDATE purchases SET purchases.status = 1 WHERE purchases.purchase_id = new.id;
+		UPDATE journals SET journals.status = 1 WHERE journals.data_id = new.id AND branch_id = new.branch_id AND journal_type_id = 2;
+	END IF;
+    END */$$
+
+
+DELIMITER ;
+
+/* Trigger structure for table `hapusjual` */
+
+DELIMITER $$
+
+/*!50003 DROP TRIGGER*//*!50032 IF EXISTS */ /*!50003 `updatestatus` */$$
+
+/*!50003 CREATE */ /*!50017 DEFINER = 'root'@'localhost' */ /*!50003 TRIGGER `updatestatus` AFTER INSERT ON `hapusjual` FOR EACH ROW BEGIN
+	DECLARE jumlah_c INT;
+	DECLARE noisbn_c INT;
+	DECLARE done INT;
+	DECLARE done2 INT;	
+	
+	DECLARE itemid INT;
+	DECLARE itemqty INT;
+	
+	DECLARE itemid2 INT;
+	DECLARE itemqty2 INT;
+	
+	DECLARE cur1 CURSOR FOR SELECT a.item_id, a.transaction_detail_qty FROM transaction_details a 
+	WHERE a.transaction_id = NEW.id;
+	DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = 1;	
+	
+	
+	SET @type = new.hapusjualbelitype;
+	IF  @type = 1 
+	THEN
+		SET done = 0;
+		OPEN cur1;
+		igmLoop: LOOP   
+		FETCH cur1 INTO itemid, itemqty;
+		IF done = 1 THEN LEAVE igmLoop; END IF;
+			UPDATE item_stocks SET item_stock_qty = item_stock_qty + itemqty WHERE item_id = itemid AND branch_id = new.branch_id;
+		END LOOP igmLoop;
+		CLOSE cur1;
+				
+		UPDATE transactions SET transactions.status = 1 WHERE transactions.transaction_id = new.id;
+		UPDATE journals SET journals.status = 1 WHERE journals.data_id = new.id and branch_id = new.branch_id and journal_type_id = 1;
+	END IF;
+    END */$$
+
+
+DELIMITER ;
+
+/* Trigger structure for table `purchases` */
+
+DELIMITER $$
+
+/*!50003 DROP TRIGGER*//*!50032 IF EXISTS */ /*!50003 `createjournalpembelian` */$$
+
+/*!50003 CREATE */ /*!50017 DEFINER = 'root'@'localhost' */ /*!50003 TRIGGER `createjournalpembelian` AFTER INSERT ON `purchases` FOR EACH ROW BEGIN
+	INSERT INTO journals VALUES('', '2', new.purchase_id, 'purchase.php', '', new.purchase_total, '', '', '', new.purchase_date, '', new.user_id, new.branch_id, '0');
+    END */$$
+
+
+DELIMITER ;
+
 /* Trigger structure for table `transaction_details` */
 
 DELIMITER $$
 
 /*!50003 DROP TRIGGER*//*!50032 IF EXISTS */ /*!50003 `updatestock` */$$
 
-/*!50003 CREATE */ /*!50017 DEFINER = 'root'@'localhost' */ /*!50003 TRIGGER `updatestock` AFTER INSERT ON `transaction_details` FOR EACH ROW BEGIN
+/*!50003 CREATE */ /*!50017 DEFINER = 'jasaprog_casinghp2'@'localhost' */ /*!50003 TRIGGER `updatestock` AFTER INSERT ON `transaction_details` FOR EACH ROW BEGIN
 	UPDATE item_stocks SET item_stock_qty = item_stock_qty - NEW.transaction_detail_qty
 	WHERE item_id = NEW.item_id;
     END */$$
@@ -601,11 +715,10 @@ DELIMITER ;
 
 DELIMITER $$
 
-/*!50003 DROP TRIGGER*//*!50032 IF EXISTS */ /*!50003 `journalpenjualan` */$$
+/*!50003 DROP TRIGGER*//*!50032 IF EXISTS */ /*!50003 `createjournalpenjualan` */$$
 
-/*!50003 CREATE */ /*!50017 DEFINER = 'root'@'localhost' */ /*!50003 TRIGGER `journalpenjualan` AFTER INSERT ON `transactions` FOR EACH ROW BEGIN
-   
-	insert into journals values('', 1, new.transaction_id, '', new.transaction_grand_total, '', '', '', new.transaction_date, '', new.bank_id, new.user_id, new.branch_id);
+/*!50003 CREATE */ /*!50017 DEFINER = 'root'@'localhost' */ /*!50003 TRIGGER `createjournalpenjualan` AFTER INSERT ON `transactions` FOR EACH ROW BEGIN
+	insert into journals values('', '2', new.transaction_id, 'transaction.php', new.payment_method_id, '', '', '', '', new.transaction_date, new.bank_id, new.user_id, new.branch_id, '0');
     END */$$
 
 
@@ -619,7 +732,7 @@ DELIMITER ;
 
 DELIMITER $$
 
-/*!50106 CREATE DEFINER=`root`@`localhost` EVENT `stockthismonth` ON SCHEDULE EVERY 1 MONTH STARTS '2017-05-28 22:16:00' ON COMPLETION NOT PRESERVE ENABLE DO BEGIN
+/*!50106 CREATE DEFINER=`root`@`localhost` EVENT `stockthismonth` ON SCHEDULE EVERY 1 MONTH STARTS '2017-06-09 03:34:11' ON COMPLETION NOT PRESERVE ENABLE DO BEGIN
 	declare item_id int;
 	declare item_qtyawal int;
 	declare branch_id int;
@@ -644,7 +757,7 @@ DELIMITER ;
 
 DELIMITER $$
 
-/*!50106 CREATE DEFINER=`root`@`localhost` EVENT `stocktoday` ON SCHEDULE EVERY 1 DAY STARTS '2017-05-28 22:10:20' ON COMPLETION NOT PRESERVE ENABLE DO BEGIN
+/*!50106 CREATE DEFINER=`root`@`localhost` EVENT `stocktoday` ON SCHEDULE EVERY 1 DAY STARTS '2017-06-09 03:34:24' ON COMPLETION NOT PRESERVE ENABLE DO BEGIN
 	declare item_id int;
 	declare item_qtykeluar int;
 	declare branch_id int;

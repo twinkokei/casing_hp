@@ -1,33 +1,32 @@
 <?php
 
 function select_detail($date1, $date2){
-
 	$query = mysql_query("SELECT a.item_id , a.item_price, a.item_name, b.jumlah, jumlah_dasar, jumlah_omset
-								FROM items a
-								JOIN (
+												FROM items a
+												JOIN (
 
-									SELECT 	SUM( transaction_detail_qty ) AS jumlah,
-											SUM( transaction_detail_qty * transaction_detail_original_price ) AS jumlah_dasar,
-											SUM( transaction_detail_qty * transaction_detail_price ) AS jumlah_omset,
-											item_id
-									FROM transaction_details a
-									JOIN transactions b ON b.transaction_id = a.transaction_id
-									WHERE  b.transaction_date >= '$date1'
-									AND b.transaction_date <= '$date2'
-									GROUP BY item_id
-								) AS b ON b.item_id = a.item_id
-								ORDER BY b.jumlah DESC
-						");
+													SELECT SUM( transaction_detail_qty ) AS jumlah,
+														SUM( transaction_detail_qty * transaction_detail_original_price ) AS jumlah_dasar,
+														SUM( transaction_detail_qty * transaction_detail_price ) AS jumlah_omset,
+														item_id
+													FROM transaction_details a
+													JOIN transactions b ON b.transaction_id = a.transaction_id
+													WHERE  b.transaction_date >= '$date1'
+													AND b.transaction_date <= '$date2'
+													GROUP BY item_id
+												) AS b ON b.item_id = a.item_id
+												ORDER BY b.jumlah DESC");
 
 	return $query;
 }
 
 function select_transaction($date1, $date2){
 
-	$query = mysql_query("SELECT b.*
-									FROM transactions b
-									WHERE  b.transaction_date >= '$date1'
-									AND b.transaction_date <= '$date2'
+	$query = mysql_query("SELECT a.*
+									FROM transactions a
+									WHERE  a.`transaction_date` >= '$date1'
+									AND a.`transaction_date` <= '$date2'
+									AND a.`status` = 0
 									ORDER BY transaction_id
 						");
 
@@ -111,36 +110,6 @@ function select_partner($date1, $date2){
 }
 
 
-function delete_transaction($transaction_id){
-
-		//mysql_query("delete from transaction_details where transaction_id = '".$row['transaction_id']."'");
-		//mysql_query("insert into transaction_histories select * from transactions where transaction_id = '$transaction_id'");
-	$query = mysql_query("select * from transactions where transaction_id = '$transaction_id'");
-	$result = mysql_fetch_array($query);
-	$data = array();
-
-	$data = "'".$result['transaction_id']."',
-			'".$result['table_id']."',
-			'".$result['branch_id']."',
-			'".$result['member_id']."',
-			'".$result['transaction_date']."',
-			'".$result['transaction_total']."',
-			'".$result['transaction_discount']."',
-			'".$result['transaction_grand_total']."',
-			'".$result['transaction_payment']."',
-			'".$result['transaction_change']."',
-			'".$result['payment_method_id']."',
-			'".$result['bank_id']."',
-			'".$result['user_id']."',
-			'".$result['bank_account_number']."',
-			'".$result['transaction_code']."',
-			'".$_SESSION['user_id']."',
-			'0'";
-
-	mysql_query("insert into transaction_histories values(".$data.")");
-
-	mysql_query("delete from transactions where transaction_id = '$transaction_id'");
-}
 
 function get_total_dasar($date1, $date2, $partner_id){
 	$query = mysql_query("SELECT a.menu_id, a.menu_price, a.menu_name, jumlah
@@ -161,6 +130,34 @@ function get_total_dasar($date1, $date2, $partner_id){
 	$result = mysql_fetch_array($query);
 	$result = ($result['menu_name']) ? $result['menu_name'] : "-";
 	return $result;
+}
+
+function select_itemday($date1, $date2){
+	$query = mysql_query("SELECT a.*, b.`item_name` FROM historystockday a
+												LEFT JOIN items b ON b.`item_id` = a.`item`
+												WHERE a.`historystock_date` >= '$date1'
+												AND a.`historystock_date` <= '$date1'");
+	return $query;
+}
+
+function select_itemmonth($date1, $date2)
+{
+	$query = mysql_query("SELECT a.*, b.`item_name` FROM historystockmonth a
+												LEFT JOIN items b ON b.`item_id` = a.`item`
+												WHERE MONTH(a.`historystock_date`) >= MONTH('$date1')
+												AND MONTH(a.`historystock_date`) <= '$date1'");
+	return $query;
+}
+
+function select_detailpembelian($date1, $date2){
+	$query = mysql_query("SELECT a.*, b.supplier_name, d.user_name FROM purchases a
+												LEFT JOIN suppliers b ON b.`supplier_id` = a.`supplier_id`
+												LEFT JOIN branches c ON c.`branch_id` = a.`branch_id`
+												LEFT JOIN users d ON d.`user_id` = a.`user_id`
+												WHERE a.`purchase_date` >= '$date1'
+												AND a.`purchase_date` <= '$date2'
+												AND a.`status` = 0");
+	return $query;
 }
 
 ?>

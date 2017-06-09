@@ -72,7 +72,8 @@ function btn_bayar(){
             type: "POST",
             url: url,
             data: paramArr, // serializes the form's elements.
-			dataType: "JSON",
+						dataType: "JSON",
+						cache : false,
             success: function(data)
             {
 				if (data.status == '200') {
